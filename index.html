@@ -1,1 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jarvis Phase 1</title>
 
+<style>
+body{
+  background:black;
+  color:#00f7ff;
+  font-family:Arial;
+  text-align:center;
+}
+
+h1{
+  margin-top:40px;
+  text-shadow:0 0 20px #00f7ff;
+}
+
+button{
+  margin-top:25px;
+  padding:18px;
+  font-size:18px;
+  background:black;
+  border:2px solid #00f7ff;
+  color:#00f7ff;
+  box-shadow:0 0 15px #00f7ff;
+}
+
+#status{
+  margin-top:25px;
+  font-size:18px;
+}
+</style>
+</head>
+
+<body>
+
+<h1>JARVIS</h1>
+
+<button onclick="startJarvis()">Start</button>
+<button onclick="stopJarvis()">Stop</button>
+
+<p id="status">Idle</p>
+
+<script>
+
+let recognition;
+let isListening = false;
+
+// STATUS
+function setStatus(text){
+  document.getElementById("status").innerText = text;
+}
+
+// SPEAK
+function speak(text){
+
+  let speech = new SpeechSynthesisUtterance(text);
+
+  speech.rate = 0.95;
+  speech.pitch = 1;
+
+  speech.onstart = ()=>{
+    setStatus("Responding...");
+  };
+
+  speech.onend = ()=>{
+    if(isListening){
+      setTimeout(startListening, 400);
+    }
+  };
+
+  speechSynthesis.cancel();
+  speechSynthesis.speak(speech);
+}
+
+// COMMAND ENGINE
+function processCommand(text){
+
+  text = text.toLowerCase();
+
+  if(text.includes("sad") || text.includes("tired")){
+    speak("You sound tired. Take a break. I am here.");
+    return;
+  }
+
+  if(text.includes("happy") || text.includes("good")){
+    speak("Good. Stay focused and keep going.");
+    return;
+  }
+
+  if(text.includes("time")){
+    let time = new Date().toLocaleTimeString();
+    speak("The time is " + time);
+    return;
+  }
+
+  if(text.includes("youtube")){
+    speak("Opening YouTube");
+    window.open("https://youtube.com");
+    return;
+  }
+
+  if(text.includes("who are you")){
+    speak("I am Jarvis, your personal assistant.");
+    return;
+  }
+
+  if(text.includes("stop")){
+    speak("Shutting down.");
+    stopJarvis();
+    return;
+  }
+
+  speak("Understood.");
+}
+
+// START
+function startJarvis(){
+
+  let SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+  if(!SR){
+    alert("Use Chrome browser");
+    return;
+  }
+
+  recognition = new SR();
+  recognition.lang = "en-US";
+  recognition.continuous = false;
+
+  isListening = true;
+
+  speak("Jarvis activated.");
+}
+
+// STOP
+function stopJarvis(){
+  isListening = false;
+
+  if(recognition){
+    recognition.stop();
+  }
+
+  setStatus("Idle");
+}
+
+// LISTEN LOOP
+function startListening(){
+
+  if(!isListening) return;
+
+  setStatus("Listening...");
+
+  recognition.start();
+
+  recognition.onresult = (event)=>{
+    let text = event.results[0][0].transcript;
+
+    setStatus("Processing...");
+
+    processCommand(text);
+  };
+
+  recognition.onerror = ()=>{
+    setStatus("Retrying...");
+    setTimeout(startListening, 1000);
+  };
+
+  recognition.onend = ()=>{
+    if(isListening){
+      setTimeout(startListening, 500);
+    }
+  };
+}
+
+</script>
+
+</body>
+  </html>
