@@ -13,7 +13,6 @@ body{
 }
 h1{
   margin-top:40px;
-  text-shadow:0 0 20px #00f7ff;
 }
 button{
   margin-top:25px;
@@ -27,6 +26,11 @@ button{
   margin-top:25px;
   font-size:18px;
 }
+#debug{
+  margin-top:15px;
+  font-size:14px;
+  color:#888;
+}
 </style>
 </head>
 
@@ -38,6 +42,7 @@ button{
 <button onclick="stopJarvis()">Stop</button>
 
 <p id="status">Idle</p>
+<p id="debug"></p>
 
 <script>
 
@@ -47,6 +52,11 @@ let isListening = false;
 // STATUS
 function setStatus(text){
   document.getElementById("status").innerText = text;
+}
+
+// DEBUG DISPLAY
+function showDebug(text){
+  document.getElementById("debug").innerText = "Heard: " + text;
 }
 
 // SPEAK
@@ -67,7 +77,6 @@ function speak(text){
 function remember(key, value){
   localStorage.setItem(key, value);
 }
-
 function recall(key){
   return localStorage.getItem(key);
 }
@@ -78,13 +87,21 @@ function isValidInput(text){
   return true;
 }
 
+// MATCH HELPER
+function match(text, keywords){
+  return keywords.some(k => text.includes(k));
+}
+
 // COMMAND ENGINE
 function processCommand(text){
 
   text = text.toLowerCase();
   text = text.replace(/[^\w\s]/gi, "");
 
-  // ===== MEMORY STORE =====
+  // ===== DEBUG =====
+  showDebug(text);
+
+  // MEMORY STORE
   if(text.includes("my name is")){
     let name = text.replace("my name is", "").trim();
     remember("user_name", name);
@@ -92,11 +109,8 @@ function processCommand(text){
     return;
   }
 
-  // ===== MEMORY RECALL =====
-  if(
-    text.includes("what is my name") ||
-    text.includes("do you know my name")
-  ){
+  // MEMORY RECALL
+  if(match(text, ["what is my name","do you know my name"])){
     let name = recall("user_name");
     if(name){
       speak("Your name is " + name);
@@ -106,63 +120,57 @@ function processCommand(text){
     return;
   }
 
-  // ===== CREATOR =====
-  if(
-    text.includes("who created you") ||
-    text.includes("who made you") ||
-    text.includes("your creator")
-  ){
+  // CREATOR (FIXED)
+  if(match(text, [
+    "who created you",
+    "who made you",
+    "who built you",
+    "your creator"
+  ])){
     speak("I was created by my developer to become a powerful assistant.");
     return;
   }
 
-  // ===== IDENTITY =====
-  if(
-    text.includes("who are you") ||
-    text.includes("your name")
-  ){
+  // IDENTITY
+  if(match(text, ["who are you","your name"])){
     speak("I am Jarvis, your personal assistant.");
     return;
   }
 
-  // ===== TIME =====
-  if(text.includes("time")){
+  // TIME
+  if(match(text, ["time","current time","what time"])){
     let time = new Date().toLocaleTimeString();
     speak("The time is " + time);
     return;
   }
 
-  // ===== YOUTUBE =====
-  if(text.includes("youtube")){
+  // YOUTUBE
+  if(match(text, ["youtube","open youtube","play youtube"])){
     speak("Opening YouTube");
     window.open("https://youtube.com");
     return;
   }
 
-  // ===== STOP =====
-  if(
-    text.includes("stop") ||
-    text.includes("shutdown") ||
-    text.includes("exit")
-  ){
+  // STOP
+  if(match(text, ["stop","shutdown","exit"])){
     speak("Shutting down.");
     stopJarvis();
     return;
   }
 
-  // ===== EMOTION =====
-  if(text.includes("tired") || text.includes("sad")){
-    speak("You sound tired. Take a short break.");
+  // EMOTION
+  if(match(text, ["tired","sad"])){
+    speak("You sound tired. Take a break.");
     return;
   }
 
-  if(text.includes("happy") || text.includes("good")){
+  if(match(text, ["happy","good"])){
     speak("Good. Stay focused.");
     return;
   }
 
-  // ===== DEFAULT =====
-  speak("I did not fully understand. Please repeat.");
+  // DEFAULT
+  speak("I did not understand. Please repeat.");
 }
 
 // START
