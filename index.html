@@ -75,45 +75,74 @@ function speak(text){
   speechSynthesis.speak(speech);
 }
 
-// COMMAND ENGINE
+// COMMAND ENGINE (IMPROVED)
 function processCommand(text){
 
   text = text.toLowerCase();
+  text = text.replace(/[^\w\s]/gi, "");
 
-  if(text.includes("sad") || text.includes("tired")){
-    speak("You sound tired. Take a break. I am here.");
-    return;
-  }
-
-  if(text.includes("happy") || text.includes("good")){
-    speak("Good. Stay focused and keep going.");
-    return;
-  }
-
-  if(text.includes("time")){
+  // TIME
+  if(
+    text.includes("time") ||
+    text.includes("current time") ||
+    text.includes("what time") ||
+    text.includes("tell me time")
+  ){
     let time = new Date().toLocaleTimeString();
     speak("The time is " + time);
     return;
   }
 
-  if(text.includes("youtube")){
+  // YOUTUBE
+  if(
+    text.includes("youtube") ||
+    text.includes("open youtube") ||
+    text.includes("play youtube")
+  ){
     speak("Opening YouTube");
     window.open("https://youtube.com");
     return;
   }
 
-  if(text.includes("who are you")){
+  // IDENTITY
+  if(
+    text.includes("who are you") ||
+    text.includes("your name")
+  ){
     speak("I am Jarvis, your personal assistant.");
     return;
   }
 
-  if(text.includes("stop")){
+  // STOP
+  if(
+    text.includes("stop") ||
+    text.includes("shutdown") ||
+    text.includes("exit")
+  ){
     speak("Shutting down.");
     stopJarvis();
     return;
   }
 
-  speak("Understood.");
+  // EMOTION
+  if(
+    text.includes("tired") ||
+    text.includes("sad")
+  ){
+    speak("You sound tired. Take a short break.");
+    return;
+  }
+
+  if(
+    text.includes("happy") ||
+    text.includes("good")
+  ){
+    speak("Good. Stay focused.");
+    return;
+  }
+
+  // DEFAULT
+  speak("I did not fully understand. Please repeat.");
 }
 
 // START
@@ -178,5 +207,4 @@ function startListening(){
 </script>
 
 </body>
-  </html>
-  
+</html>
