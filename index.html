@@ -1,8 +1,8 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Jarvis Phase 1</title>
+<title>Jarvis Phase 2</title>
 
 <style>
 body{
@@ -11,12 +11,10 @@ body{
   font-family:Arial;
   text-align:center;
 }
-
 h1{
   margin-top:40px;
   text-shadow:0 0 20px #00f7ff;
 }
-
 button{
   margin-top:25px;
   padding:18px;
@@ -24,9 +22,7 @@ button{
   background:black;
   border:2px solid #00f7ff;
   color:#00f7ff;
-  box-shadow:0 0 15px #00f7ff;
 }
-
 #status{
   margin-top:25px;
   font-size:18px;
@@ -48,113 +44,89 @@ button{
 let recognition;
 let isListening = false;
 
-// STATUS
 function setStatus(text){
   document.getElementById("status").innerText = text;
 }
 
-// SPEAK
 function speak(text){
-
   let speech = new SpeechSynthesisUtterance(text);
-
   speech.rate = 0.95;
-  speech.pitch = 1;
 
-  speech.onstart = ()=>{
-    setStatus("Responding...");
-  };
-
+  speech.onstart = ()=> setStatus("Responding...");
   speech.onend = ()=>{
-    if(isListening){
-      setTimeout(startListening, 500);
-    }
+    if(isListening) setTimeout(startListening, 400);
   };
 
   speechSynthesis.cancel();
   speechSynthesis.speak(speech);
 }
 
-// NOISE FILTER
+// ===== MEMORY SYSTEM =====
+function remember(key, value){
+  localStorage.setItem(key, value);
+}
+
+function recall(key){
+  return localStorage.getItem(key);
+}
+
+// ===== INPUT FILTER =====
 function isValidInput(text){
-
-  if(!text) return false;
-
-  text = text.trim();
-
-  // Ignore very short/random noise
-  if(text.length < 3) return false;
-
-  // Ignore meaningless filler
-  const ignoreWords = ["uh", "um", "hmm", "noise"];
-  if(ignoreWords.includes(text)) return false;
-
+  if(!text || text.length < 3) return false;
   return true;
 }
 
-// COMMAND ENGINE
+// ===== COMMAND ENGINE =====
 function processCommand(text){
 
   text = text.toLowerCase();
   text = text.replace(/[^\w\s]/gi, "");
 
-  // TIME
-  if(
-    text.includes("time") ||
-    text.includes("current time") ||
-    text.includes("what time")
-  ){
+  // ===== MEMORY STORE =====
+  if(text.includes("my name is")){
+    let name = text.replace("my name is", "").trim();
+    remember("user_name", name);
+    speak("I will remember that.");
+    return;
+  }
+
+  // ===== MEMORY RECALL =====
+  if(text.includes("what is my name")){
+    let name = recall("user_name");
+    if(name){
+      speak("Your name is " + name);
+    } else {
+      speak("I do not know your name yet.");
+    }
+    return;
+  }
+
+  // ===== TIME =====
+  if(text.includes("time")){
     let time = new Date().toLocaleTimeString();
     speak("The time is " + time);
     return;
   }
 
-  // YOUTUBE
-  if(
-    text.includes("youtube") ||
-    text.includes("open youtube") ||
-    text.includes("play youtube")
-  ){
+  // ===== YOUTUBE =====
+  if(text.includes("youtube")){
     speak("Opening YouTube");
     window.open("https://youtube.com");
     return;
   }
 
-  // IDENTITY
-  if(text.includes("who are you")){
-    speak("I am Jarvis, your personal assistant.");
-    return;
-  }
-
-  // STOP
-  if(
-    text.includes("stop") ||
-    text.includes("shutdown") ||
-    text.includes("exit")
-  ){
+  // ===== STOP =====
+  if(text.includes("stop")){
     speak("Shutting down.");
     stopJarvis();
     return;
   }
 
-  // EMOTION
-  if(text.includes("tired") || text.includes("sad")){
-    speak("You sound tired. Take a short break.");
-    return;
-  }
-
-  if(text.includes("happy") || text.includes("good")){
-    speak("Good. Stay focused.");
-    return;
-  }
-
-  // DEFAULT
-  speak("Please repeat your command clearly.");
+  speak("Understood.");
 }
 
-// START
+// ===== START =====
 function startJarvis(){
-
   let SR = window.SpeechRecognition || window.webkitSpeechRecognition;
 
   if(!SR){
@@ -164,38 +136,31 @@ function startJarvis(){
 
   recognition = new SR();
   recognition.lang = "en-US";
-  recognition.continuous = false;
 
   isListening = true;
 
   speak("Jarvis activated.");
 }
 
-// STOP
+// ===== STOP =====
 function stopJarvis(){
   isListening = false;
-
-  if(recognition){
-    recognition.stop();
-  }
-
+  if(recognition) recognition.stop();
   setStatus("Idle");
 }
 
-// LISTEN LOOP
+// ===== LOOP =====
 function startListening(){
 
   if(!isListening) return;
 
   setStatus("Listening...");
-
   recognition.start();
 
   recognition.onresult = (event)=>{
     let text = event.results[0][0].transcript;
 
     if(!isValidInput(text)){
-      setStatus("Ignoring noise...");
       setTimeout(startListening, 500);
       return;
     }
@@ -204,15 +169,14 @@ function startListening(){
     processCommand(text);
   };
 
-  recognition.onerror = ()=>{
-    setStatus("Retrying...");
-    setTimeout(startListening, 1000);
-  };
-
   recognition.onend = ()=>{
     if(isListening){
       setTimeout(startListening, 500);
     }
+  };
+
+  recognition.onerror = ()=>{
+    setTimeout(startListening, 1000);
   };
 }
 
