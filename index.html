@@ -67,7 +67,7 @@ function speak(text){
 
   speech.onend = ()=>{
     if(isListening){
-      setTimeout(startListening, 400);
+      setTimeout(startListening, 500);
     }
   };
 
@@ -75,7 +75,24 @@ function speak(text){
   speechSynthesis.speak(speech);
 }
 
-// COMMAND ENGINE (IMPROVED)
+// NOISE FILTER
+function isValidInput(text){
+
+  if(!text) return false;
+
+  text = text.trim();
+
+  // Ignore very short/random noise
+  if(text.length < 3) return false;
+
+  // Ignore meaningless filler
+  const ignoreWords = ["uh", "um", "hmm", "noise"];
+  if(ignoreWords.includes(text)) return false;
+
+  return true;
+}
+
+// COMMAND ENGINE
 function processCommand(text){
 
   text = text.toLowerCase();
@@ -85,8 +102,7 @@ function processCommand(text){
   if(
     text.includes("time") ||
     text.includes("current time") ||
-    text.includes("what time") ||
-    text.includes("tell me time")
+    text.includes("what time")
   ){
     let time = new Date().toLocaleTimeString();
     speak("The time is " + time);
@@ -105,10 +121,7 @@ function processCommand(text){
   }
 
   // IDENTITY
-  if(
-    text.includes("who are you") ||
-    text.includes("your name")
-  ){
+  if(text.includes("who are you")){
     speak("I am Jarvis, your personal assistant.");
     return;
   }
@@ -125,24 +138,18 @@ function processCommand(text){
   }
 
   // EMOTION
-  if(
-    text.includes("tired") ||
-    text.includes("sad")
-  ){
+  if(text.includes("tired") || text.includes("sad")){
     speak("You sound tired. Take a short break.");
     return;
   }
 
-  if(
-    text.includes("happy") ||
-    text.includes("good")
-  ){
+  if(text.includes("happy") || text.includes("good")){
     speak("Good. Stay focused.");
     return;
   }
 
   // DEFAULT
-  speak("I did not fully understand. Please repeat.");
+  speak("Please repeat your command clearly.");
 }
 
 // START
@@ -187,8 +194,13 @@ function startListening(){
   recognition.onresult = (event)=>{
     let text = event.results[0][0].transcript;
 
-    setStatus("Processing...");
+    if(!isValidInput(text)){
+      setStatus("Ignoring noise...");
+      setTimeout(startListening, 500);
+      return;
+    }
 
+    setStatus("Processing...");
     processCommand(text);
   };
 
