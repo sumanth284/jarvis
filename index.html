@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -44,10 +44,12 @@ button{
 let recognition;
 let isListening = false;
 
+// STATUS
 function setStatus(text){
   document.getElementById("status").innerText = text;
 }
 
+// SPEAK
 function speak(text){
   let speech = new SpeechSynthesisUtterance(text);
   speech.rate = 0.95;
@@ -61,7 +63,7 @@ function speak(text){
   speechSynthesis.speak(speech);
 }
 
-// ===== MEMORY SYSTEM =====
+// MEMORY
 function remember(key, value){
   localStorage.setItem(key, value);
 }
@@ -70,13 +72,13 @@ function recall(key){
   return localStorage.getItem(key);
 }
 
-// ===== INPUT FILTER =====
+// INPUT FILTER
 function isValidInput(text){
   if(!text || text.length < 3) return false;
   return true;
 }
 
-// ===== COMMAND ENGINE =====
+// COMMAND ENGINE
 function processCommand(text){
 
   text = text.toLowerCase();
@@ -91,13 +93,35 @@ function processCommand(text){
   }
 
   // ===== MEMORY RECALL =====
-  if(text.includes("what is my name")){
+  if(
+    text.includes("what is my name") ||
+    text.includes("do you know my name")
+  ){
     let name = recall("user_name");
     if(name){
       speak("Your name is " + name);
     } else {
       speak("I do not know your name yet.");
     }
+    return;
+  }
+
+  // ===== CREATOR =====
+  if(
+    text.includes("who created you") ||
+    text.includes("who made you") ||
+    text.includes("your creator")
+  ){
+    speak("I was created by my developer to become a powerful assistant.");
+    return;
+  }
+
+  // ===== IDENTITY =====
+  if(
+    text.includes("who are you") ||
+    text.includes("your name")
+  ){
+    speak("I am Jarvis, your personal assistant.");
     return;
   }
 
@@ -116,16 +140,32 @@ function processCommand(text){
   }
 
   // ===== STOP =====
-  if(text.includes("stop")){
+  if(
+    text.includes("stop") ||
+    text.includes("shutdown") ||
+    text.includes("exit")
+  ){
     speak("Shutting down.");
     stopJarvis();
     return;
   }
 
-  speak("Understood.");
+  // ===== EMOTION =====
+  if(text.includes("tired") || text.includes("sad")){
+    speak("You sound tired. Take a short break.");
+    return;
+  }
+
+  if(text.includes("happy") || text.includes("good")){
+    speak("Good. Stay focused.");
+    return;
+  }
+
+  // ===== DEFAULT =====
+  speak("I did not fully understand. Please repeat.");
 }
 
-// ===== START =====
+// START
 function startJarvis(){
   let SR = window.SpeechRecognition || window.webkitSpeechRecognition;
 
@@ -142,14 +182,14 @@ function startJarvis(){
   speak("Jarvis activated.");
 }
 
-// ===== STOP =====
+// STOP
 function stopJarvis(){
   isListening = false;
   if(recognition) recognition.stop();
   setStatus("Idle");
 }
 
-// ===== LOOP =====
+// LOOP
 function startListening(){
 
   if(!isListening) return;
