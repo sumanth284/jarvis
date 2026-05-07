@@ -21,7 +21,7 @@ body{
   color:#00e5ff;
 }
 
-/* BACKGROUND GRID */
+/* GRID BACKGROUND */
 
 body::before{
   content:"";
@@ -41,10 +41,11 @@ body::before{
   position:relative;
   z-index:2;
   width:100%;
-  height:100vh;
+  min-height:100vh;
   display:flex;
   flex-direction:column;
   align-items:center;
+  padding-bottom:40px;
 }
 
 /* TITLE */
@@ -59,14 +60,16 @@ body::before{
   0 0 30px #00e5ff;
 }
 
-/* TOP STATUS */
+/* TOPBAR */
 
 .topbar{
   width:95%;
   display:flex;
   justify-content:space-between;
-  margin-top:10px;
+  margin-top:15px;
 }
+
+/* PANEL */
 
 .panel{
   border:1px solid #00e5ff55;
@@ -79,27 +82,45 @@ body::before{
 
 .small{
   width:220px;
-  min-height:100px;
+  min-height:120px;
+}
+
+/* TIME PANEL */
+
+#day{
+  font-size:22px;
+  margin-top:5px;
+}
+
+#date{
+  margin-top:8px;
+  color:#9edfff;
+}
+
+#clock{
+  margin-top:10px;
+  font-size:32px;
+  text-shadow:0 0 15px #00e5ff;
 }
 
 /* CENTER AREA */
 
 .center{
-  display:flex;
   width:100%;
+  display:flex;
   justify-content:space-between;
   align-items:center;
   margin-top:20px;
 }
 
-/* SIDE PANELS */
+/* SIDE */
 
 .side{
   width:22%;
   padding:10px;
 }
 
-/* CORE */
+/* CORE AREA */
 
 .core-area{
   width:56%;
@@ -108,11 +129,15 @@ body::before{
   align-items:center;
 }
 
+/* REACTOR CORE */
+
 .core{
 
   width:320px;
   height:320px;
+
   border-radius:50%;
+
   position:relative;
 
   border:4px solid #00e5ff;
@@ -154,7 +179,7 @@ body::before{
 /* STATUS */
 
 #status{
-  margin-top:20px;
+  margin-top:15px;
   font-size:24px;
 }
 
@@ -240,14 +265,25 @@ button:active{
 <div class="topbar">
 
 <div class="panel small">
+
 <h3>SYSTEM STATUS</h3>
+
 <p>ONLINE</p>
+
 <p id="status">Idle</p>
+
 </div>
 
 <div class="panel small">
-<h3>TIME</h3>
+
+<h3>DATE & TIME</h3>
+
+<p id="day"></p>
+
+<p id="date"></p>
+
 <p id="clock"></p>
+
 </div>
 
 </div>
@@ -303,41 +339,81 @@ button:active{
 let recognition;
 let isListening = false;
 
-// CLOCK
+/* DATE & TIME */
 
-setInterval(()=>{
+function updateDateTime(){
+
+  const now = new Date();
+
+  const days = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday"
+  ];
+
+  document.getElementById("day").innerText =
+    days[now.getDay()];
+
+  const options = {
+    day:"numeric",
+    month:"long",
+    year:"numeric"
+  };
+
+  document.getElementById("date").innerText =
+    now.toLocaleDateString(
+      "en-US",
+      options
+    );
 
   document.getElementById("clock").innerText =
-  new Date().toLocaleTimeString();
+    now.toLocaleTimeString(
+      "en-US",
+      {
+        hour:"numeric",
+        minute:"2-digit",
+        second:"2-digit",
+        hour12:true
+      }
+    );
+}
 
-},1000);
+setInterval(updateDateTime,1000);
 
-// STATUS
+updateDateTime();
+
+/* STATUS */
 
 function setStatus(text){
 
   document.getElementById("status").innerText = text;
 }
 
-// LOGS
+/* LOGS */
 
 function addLog(text){
 
-  let logs = document.getElementById("logs");
+  let logs =
+    document.getElementById("logs");
 
-  logs.innerHTML += "<div>" + text + "</div>";
+  logs.innerHTML +=
+    "<div>" + text + "</div>";
 
   logs.scrollTop = logs.scrollHeight;
 }
 
-// SPEAK
+/* SPEAK */
 
 function speak(text){
 
   addLog("Jarvis: " + text);
 
   let speech =
-  new SpeechSynthesisUtterance(text);
+    new SpeechSynthesisUtterance(text);
 
   speech.rate = 0.95;
 
@@ -359,7 +435,7 @@ function speak(text){
   speechSynthesis.speak(speech);
 }
 
-// MEMORY SAVE
+/* MEMORY */
 
 function rememberFact(fact){
 
@@ -377,8 +453,6 @@ function rememberFact(fact){
   updateMemoryUI();
 }
 
-// MEMORY LOAD
-
 function getMemory(){
 
   return JSON.parse(
@@ -386,34 +460,34 @@ function getMemory(){
   );
 }
 
-// MEMORY UI
-
 function updateMemoryUI(){
 
   let memory = getMemory();
 
   let box =
-  document.getElementById("memoryList");
+    document.getElementById("memoryList");
 
   box.innerHTML = "";
 
   memory.forEach(item=>{
 
     box.innerHTML +=
-    '<div class="memory-item">' +
-    item +
-    '</div>';
+      '<div class="memory-item">' +
+      item +
+      '</div>';
   });
 }
 
-// MATCH
+/* MATCH */
 
 function match(text,arr){
 
-  return arr.some(k=>text.includes(k));
+  return arr.some(
+    k=>text.includes(k)
+  );
 }
 
-// COMMAND ENGINE
+/* COMMAND ENGINE */
 
 function processCommand(raw){
 
@@ -421,16 +495,14 @@ function processCommand(raw){
 
   addLog("User: " + text);
 
-  // MEMORY SAVE
+  /* MEMORY SAVE */
 
-  if(
-    text.startsWith("remember")
-  ){
+  if(text.startsWith("remember")){
 
     let fact = text
-    .replace("remember that","")
-    .replace("remember","")
-    .trim();
+      .replace("remember that","")
+      .replace("remember","")
+      .trim();
 
     if(fact){
 
@@ -442,7 +514,7 @@ function processCommand(raw){
     }
   }
 
-  // MEMORY RECALL
+  /* MEMORY RECALL */
 
   if(
     match(text,[
@@ -469,19 +541,28 @@ function processCommand(raw){
     return;
   }
 
-  // TIME
+  /* TIME */
 
   if(text.includes("time")){
 
     let time =
-    new Date().toLocaleTimeString();
+      new Date().toLocaleTimeString(
+        "en-US",
+        {
+          hour:"numeric",
+          minute:"2-digit",
+          hour12:true
+        }
+      );
 
-    speak("The time is " + time);
+    speak(
+      "The time is " + time
+    );
 
     return;
   }
 
-  // YOUTUBE
+  /* YOUTUBE */
 
   if(text.includes("youtube")){
 
@@ -494,7 +575,7 @@ function processCommand(raw){
     return;
   }
 
-  // IDENTITY
+  /* IDENTITY */
 
   if(
     match(text,[
@@ -510,7 +591,7 @@ function processCommand(raw){
     return;
   }
 
-  // STOP
+  /* STOP */
 
   if(
     match(text,[
@@ -527,20 +608,20 @@ function processCommand(raw){
     return;
   }
 
-  // DEFAULT
+  /* DEFAULT */
 
   speak(
     "Command not recognized."
   );
 }
 
-// START
+/* START */
 
 function startJarvis(){
 
   let SR =
-  window.SpeechRecognition ||
-  window.webkitSpeechRecognition;
+    window.SpeechRecognition ||
+    window.webkitSpeechRecognition;
 
   if(!SR){
 
@@ -562,7 +643,7 @@ function startJarvis(){
   speak("Jarvis activated.");
 }
 
-// STOP
+/* STOP */
 
 function stopJarvis(){
 
@@ -576,7 +657,7 @@ function stopJarvis(){
   setStatus("Idle");
 }
 
-// LISTEN LOOP
+/* LISTEN LOOP */
 
 function startListening(){
 
@@ -589,7 +670,7 @@ function startListening(){
   recognition.onresult = (event)=>{
 
     let text =
-    event.results[0][0].transcript;
+      event.results[0][0].transcript;
 
     setStatus("Processing...");
 
@@ -612,7 +693,7 @@ function startListening(){
   };
 }
 
-// LOAD MEMORY
+/* LOAD MEMORY */
 
 updateMemoryUI();
 
