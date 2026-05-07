@@ -3,28 +3,44 @@
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Jarvis AI</title>
+<title>JARVIS AI</title>
 
 <style>
 
-body{
+*{
   margin:0;
-  background:black;
-  overflow:hidden;
-  font-family:Arial;
-  color:#00f7ff;
-  text-align:center;
+  padding:0;
+  box-sizing:border-box;
 }
 
-/* BACKGROUND GLOW */
-body::before{
-  content:"";
+body{
+  background:#020412;
+  overflow:hidden;
+  font-family:Arial, sans-serif;
+  color:#00e5ff;
+  height:100vh;
+}
+
+/* BACKGROUND GRID */
+.grid{
   position:absolute;
-  width:400px;
-  height:400px;
-  background:#00f7ff33;
+  width:100%;
+  height:100%;
+  background:
+    linear-gradient(#00e5ff11 1px, transparent 1px),
+    linear-gradient(90deg,#00e5ff11 1px, transparent 1px);
+  background-size:40px 40px;
+  z-index:0;
+}
+
+/* GLOW */
+.glow{
+  position:absolute;
+  width:500px;
+  height:500px;
+  background:#00e5ff22;
   border-radius:50%;
-  filter:blur(100px);
+  filter:blur(120px);
   top:50%;
   left:50%;
   transform:translate(-50%,-50%);
@@ -38,39 +54,55 @@ body::before{
 }
 
 /* MAIN */
-.container{
+.main{
   position:relative;
   z-index:2;
-  padding-top:60px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  padding-top:30px;
 }
 
 /* TITLE */
 h1{
+  letter-spacing:10px;
   font-size:42px;
-  letter-spacing:8px;
-  text-shadow:0 0 20px #00f7ff;
+  text-shadow:
+    0 0 10px #00e5ff,
+    0 0 30px #00e5ff;
 }
 
-/* AI CORE */
+/* CORE */
 .core{
-  width:180px;
-  height:180px;
-  border:3px solid #00f7ff;
+  width:220px;
+  height:220px;
+  margin-top:35px;
   border-radius:50%;
-  margin:40px auto;
-  box-shadow:
-    0 0 20px #00f7ff,
-    0 0 60px #00f7ff;
-  animation:rotate 10s linear infinite;
+  border:4px solid #00e5ff;
   position:relative;
+  box-shadow:
+    0 0 20px #00e5ff,
+    0 0 60px #00e5ff;
+  animation:rotate 8s linear infinite;
 }
 
 .core::before{
   content:"";
   position:absolute;
-  inset:20px;
+  inset:25px;
   border-radius:50%;
-  border:2px solid #00f7ff;
+  border:3px solid #00e5ff;
+}
+
+.core::after{
+  content:"";
+  position:absolute;
+  inset:60px;
+  border-radius:50%;
+  background:#00e5ff;
+  box-shadow:
+    0 0 20px #00e5ff,
+    0 0 50px #00e5ff;
 }
 
 @keyframes rotate{
@@ -78,46 +110,67 @@ h1{
   to{transform:rotate(360deg);}
 }
 
-/* STATUS PANEL */
+/* PANEL */
 .panel{
-  width:85%;
-  max-width:400px;
-  margin:auto;
-  padding:15px;
-  border:1px solid #00f7ff55;
-  background:#00101566;
+  width:90%;
+  max-width:420px;
+  margin-top:35px;
+  background:#08121fdd;
+  border:1px solid #00e5ff44;
+  border-radius:20px;
+  padding:20px;
   backdrop-filter:blur(10px);
-  border-radius:15px;
-  box-shadow:0 0 20px #00f7ff22;
+  box-shadow:0 0 30px #00e5ff22;
 }
 
 /* STATUS */
 #status{
-  font-size:20px;
-  margin-top:10px;
+  font-size:22px;
+  margin-bottom:10px;
 }
 
 /* DEBUG */
 #debug{
-  margin-top:10px;
   font-size:14px;
-  color:#aaa;
+  color:#8fa9b3;
+  margin-bottom:20px;
+}
+
+/* MEMORY PANEL */
+.memory-title{
+  margin-bottom:10px;
+  font-size:18px;
+}
+
+#memoryList{
+  text-align:left;
+  max-height:150px;
+  overflow:auto;
+  color:#d8faff;
+}
+
+.memory-item{
+  margin-bottom:8px;
+  padding:8px;
+  border-left:2px solid #00e5ff;
+  background:#00e5ff11;
 }
 
 /* BUTTONS */
-.buttons{
-  margin-top:30px;
+.controls{
+  margin-top:25px;
 }
 
 button{
-  background:black;
-  color:#00f7ff;
-  border:2px solid #00f7ff;
-  padding:15px 25px;
+  padding:15px 28px;
   margin:10px;
+  border:none;
   border-radius:12px;
+  background:#00e5ff22;
+  color:#00e5ff;
   font-size:16px;
-  box-shadow:0 0 15px #00f7ff55;
+  border:1px solid #00e5ff88;
+  box-shadow:0 0 15px #00e5ff44;
 }
 
 button:active{
@@ -129,20 +182,30 @@ button:active{
 
 <body>
 
-<div class="container">
+<div class="grid"></div>
+<div class="glow"></div>
+
+<div class="main">
 
 <h1>JARVIS</h1>
 
 <div class="core"></div>
 
 <div class="panel">
-  <div id="status">Idle</div>
-  <div id="debug"></div>
+
+<div id="status">Idle</div>
+
+<div id="debug">Waiting...</div>
+
+<div class="memory-title">Memory</div>
+
+<div id="memoryList"></div>
+
 </div>
 
-<div class="buttons">
-  <button onclick="startJarvis()">Start</button>
-  <button onclick="stopJarvis()">Stop</button>
+<div class="controls">
+<button onclick="startJarvis()">Start</button>
+<button onclick="stopJarvis()">Stop</button>
 </div>
 
 </div>
@@ -159,13 +222,15 @@ function setStatus(text){
 
 // DEBUG
 function showDebug(text){
-  document.getElementById("debug").innerText = "Heard: " + text;
+  document.getElementById("debug").innerText =
+    "Heard: " + text;
 }
 
 // SPEAK
 function speak(text){
 
-  let speech = new SpeechSynthesisUtterance(text);
+  let speech =
+    new SpeechSynthesisUtterance(text);
 
   speech.rate = 0.95;
 
@@ -175,7 +240,7 @@ function speak(text){
 
   speech.onend = ()=>{
     if(isListening){
-      setTimeout(startListening, 400);
+      setTimeout(startListening,500);
     }
   };
 
@@ -183,7 +248,7 @@ function speak(text){
   speechSynthesis.speak(speech);
 }
 
-// MEMORY
+// MEMORY SAVE
 function rememberFact(fact){
 
   let memory = JSON.parse(
@@ -196,33 +261,60 @@ function rememberFact(fact){
     "jarvis_memory",
     JSON.stringify(memory)
   );
+
+  updateMemoryUI();
 }
 
-function recallFacts(){
+// MEMORY LOAD
+function getMemory(){
 
   return JSON.parse(
     localStorage.getItem("jarvis_memory") || "[]"
   );
 }
 
+// UPDATE MEMORY UI
+function updateMemoryUI(){
+
+  let memory = getMemory();
+
+  let box =
+    document.getElementById("memoryList");
+
+  box.innerHTML = "";
+
+  memory.forEach(item=>{
+
+    let div = document.createElement("div");
+
+    div.className = "memory-item";
+
+    div.innerText = item;
+
+    box.appendChild(div);
+  });
+}
+
 // VALID INPUT
 function isValidInput(text){
-  return text && text.length > 2;
+
+  return text && text.trim().length > 2;
 }
 
 // MATCH
 function match(text, arr){
-  return arr.some(k => text.includes(k));
+
+  return arr.some(k=>text.includes(k));
 }
 
-// COMMAND ENGINE
+// PROCESS COMMAND
 function processCommand(rawText){
 
   let text = rawText.toLowerCase();
 
   showDebug(text);
 
-  // MEMORY STORE
+  // REMEMBER
   if(
     text.startsWith("remember that") ||
     text.startsWith("remember")
@@ -233,11 +325,11 @@ function processCommand(rawText){
       .replace("remember","")
       .trim();
 
-    if(fact.length > 0){
+    if(fact){
 
       rememberFact(fact);
 
-      speak("I will remember that.");
+      speak("Memory saved.");
 
       return;
     }
@@ -247,71 +339,105 @@ function processCommand(rawText){
   if(
     match(text,[
       "what do you remember",
+      "show memory",
       "memory"
     ])
   ){
 
-    let facts = recallFacts();
+    let memory = getMemory();
 
-    if(facts.length === 0){
-      speak("I do not remember anything yet.");
+    if(memory.length === 0){
+
+      speak("Memory is empty.");
+
       return;
     }
 
-    speak("I remember " + facts.join(". "));
+    speak(
+      "I remember " +
+      memory.join(". ")
+    );
+
     return;
   }
 
   // TIME
   if(text.includes("time")){
-    let time = new Date().toLocaleTimeString();
+
+    let time =
+      new Date().toLocaleTimeString();
+
     speak("The time is " + time);
+
     return;
   }
 
   // YOUTUBE
   if(text.includes("youtube")){
+
     speak("Opening YouTube");
+
     window.open("https://youtube.com");
+
     return;
   }
 
-  // IDENTITY
-  if(match(text,[
-    "who are you",
-    "your name"
-  ])){
-    speak("I am Jarvis, your personal assistant.");
+  // WHO ARE YOU
+  if(
+    match(text,[
+      "who are you",
+      "your name"
+    ])
+  ){
+
+    speak(
+      "I am Jarvis, your AI assistant."
+    );
+
     return;
   }
 
   // STOP
-  if(match(text,[
-    "stop",
-    "shutdown",
-    "exit"
-  ])){
+  if(
+    match(text,[
+      "stop",
+      "shutdown",
+      "exit"
+    ])
+  ){
+
     speak("Shutting down.");
+
     stopJarvis();
+
     return;
   }
 
+  // DEFAULT
   speak("Please repeat clearly.");
 }
 
 // START
 function startJarvis(){
 
-  let SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  let SR =
+    window.SpeechRecognition ||
+    window.webkitSpeechRecognition;
 
   if(!SR){
+
     alert("Use Chrome browser");
+
     return;
   }
 
   recognition = new SR();
 
   recognition.lang = "en-US";
+
+  recognition.continuous = false;
+
+  recognition.interimResults = false;
 
   isListening = true;
 
@@ -330,7 +456,7 @@ function stopJarvis(){
   setStatus("Idle");
 }
 
-// LOOP
+// LISTEN LOOP
 function startListening(){
 
   if(!isListening) return;
@@ -341,10 +467,13 @@ function startListening(){
 
   recognition.onresult = (event)=>{
 
-    let text = event.results[0][0].transcript;
+    let text =
+      event.results[0][0].transcript;
 
     if(!isValidInput(text)){
+
       setTimeout(startListening,500);
+
       return;
     }
 
@@ -353,17 +482,24 @@ function startListening(){
     processCommand(text);
   };
 
+  recognition.onerror = ()=>{
+
+    setStatus("Retrying...");
+
+    setTimeout(startListening,1000);
+  };
+
   recognition.onend = ()=>{
 
     if(isListening){
+
       setTimeout(startListening,500);
     }
   };
-
-  recognition.onerror = ()=>{
-    setTimeout(startListening,1000);
-  };
 }
+
+// LOAD MEMORY UI ON START
+updateMemoryUI();
 
 </script>
 
