@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>JARVIS AI</title>
@@ -14,82 +15,119 @@
 }
 
 body{
-  background:#020412;
+  background:#020611;
   overflow:hidden;
-  font-family:Arial, sans-serif;
+  font-family:Arial;
   color:#00e5ff;
-  height:100vh;
 }
 
 /* BACKGROUND GRID */
-.grid{
+
+body::before{
+  content:"";
   position:absolute;
   width:100%;
   height:100%;
   background:
-    linear-gradient(#00e5ff11 1px, transparent 1px),
-    linear-gradient(90deg,#00e5ff11 1px, transparent 1px);
+  linear-gradient(#00e5ff10 1px, transparent 1px),
+  linear-gradient(90deg,#00e5ff10 1px, transparent 1px);
+
   background-size:40px 40px;
-  z-index:0;
-}
-
-/* GLOW */
-.glow{
-  position:absolute;
-  width:500px;
-  height:500px;
-  background:#00e5ff22;
-  border-radius:50%;
-  filter:blur(120px);
-  top:50%;
-  left:50%;
-  transform:translate(-50%,-50%);
-  animation:pulse 4s infinite;
-}
-
-@keyframes pulse{
-  0%{transform:translate(-50%,-50%) scale(1);}
-  50%{transform:translate(-50%,-50%) scale(1.2);}
-  100%{transform:translate(-50%,-50%) scale(1);}
 }
 
 /* MAIN */
+
 .main{
   position:relative;
   z-index:2;
+  width:100%;
+  height:100vh;
   display:flex;
   flex-direction:column;
   align-items:center;
-  padding-top:30px;
 }
 
 /* TITLE */
-h1{
+
+.title{
+  margin-top:20px;
+  font-size:48px;
   letter-spacing:10px;
-  font-size:42px;
+
   text-shadow:
-    0 0 10px #00e5ff,
-    0 0 30px #00e5ff;
+  0 0 10px #00e5ff,
+  0 0 30px #00e5ff;
+}
+
+/* TOP STATUS */
+
+.topbar{
+  width:95%;
+  display:flex;
+  justify-content:space-between;
+  margin-top:10px;
+}
+
+.panel{
+  border:1px solid #00e5ff55;
+  background:#06131faa;
+  backdrop-filter:blur(10px);
+  border-radius:15px;
+  padding:15px;
+  box-shadow:0 0 20px #00e5ff22;
+}
+
+.small{
+  width:220px;
+  min-height:100px;
+}
+
+/* CENTER AREA */
+
+.center{
+  display:flex;
+  width:100%;
+  justify-content:space-between;
+  align-items:center;
+  margin-top:20px;
+}
+
+/* SIDE PANELS */
+
+.side{
+  width:22%;
+  padding:10px;
 }
 
 /* CORE */
+
+.core-area{
+  width:56%;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
 .core{
-  width:220px;
-  height:220px;
-  margin-top:35px;
+
+  width:320px;
+  height:320px;
   border-radius:50%;
-  border:4px solid #00e5ff;
   position:relative;
+
+  border:4px solid #00e5ff;
+
   box-shadow:
-    0 0 20px #00e5ff,
-    0 0 60px #00e5ff;
-  animation:rotate 8s linear infinite;
+  0 0 30px #00e5ff,
+  0 0 80px #00e5ff;
+
+  animation:rotate 12s linear infinite;
 }
 
 .core::before{
   content:"";
   position:absolute;
-  inset:25px;
+  inset:30px;
   border-radius:50%;
   border:3px solid #00e5ff;
 }
@@ -97,12 +135,15 @@ h1{
 .core::after{
   content:"";
   position:absolute;
-  inset:60px;
+  inset:90px;
   border-radius:50%;
+
   background:#00e5ff;
+
   box-shadow:
-    0 0 20px #00e5ff,
-    0 0 50px #00e5ff;
+  0 0 30px #00e5ff,
+  0 0 80px #00e5ff,
+  0 0 120px #00e5ff;
 }
 
 @keyframes rotate{
@@ -110,67 +151,76 @@ h1{
   to{transform:rotate(360deg);}
 }
 
-/* PANEL */
-.panel{
-  width:90%;
-  max-width:420px;
-  margin-top:35px;
-  background:#08121fdd;
-  border:1px solid #00e5ff44;
-  border-radius:20px;
-  padding:20px;
-  backdrop-filter:blur(10px);
-  box-shadow:0 0 30px #00e5ff22;
-}
-
 /* STATUS */
+
 #status{
-  font-size:22px;
-  margin-bottom:10px;
+  margin-top:20px;
+  font-size:24px;
 }
 
-/* DEBUG */
-#debug{
-  font-size:14px;
-  color:#8fa9b3;
-  margin-bottom:20px;
-}
-
-/* MEMORY PANEL */
-.memory-title{
-  margin-bottom:10px;
-  font-size:18px;
-}
-
-#memoryList{
-  text-align:left;
-  max-height:150px;
-  overflow:auto;
-  color:#d8faff;
-}
+/* MEMORY */
 
 .memory-item{
-  margin-bottom:8px;
+  margin-top:10px;
   padding:8px;
   border-left:2px solid #00e5ff;
   background:#00e5ff11;
 }
 
+/* LOGS */
+
+.logs{
+  margin-top:15px;
+  height:180px;
+  overflow:auto;
+  font-size:14px;
+}
+
+/* WAVE */
+
+.wave{
+  width:100%;
+  height:60px;
+  margin-top:10px;
+
+  background:
+  repeating-linear-gradient(
+    90deg,
+    #00e5ff,
+    #00e5ff 2px,
+    transparent 2px,
+    transparent 6px
+  );
+
+  animation:wave 1s linear infinite;
+}
+
+@keyframes wave{
+  from{background-position:0 0;}
+  to{background-position:40px 0;}
+}
+
 /* BUTTONS */
+
 .controls{
   margin-top:25px;
 }
 
 button{
-  padding:15px 28px;
+  padding:15px 30px;
   margin:10px;
+
   border:none;
   border-radius:12px;
+
   background:#00e5ff22;
   color:#00e5ff;
-  font-size:16px;
+
+  font-size:18px;
+
   border:1px solid #00e5ff88;
-  box-shadow:0 0 15px #00e5ff44;
+
+  box-shadow:0 0 15px #00e5ff55;
 }
 
 button:active{
@@ -178,34 +228,72 @@ button:active{
 }
 
 </style>
+
 </head>
 
 <body>
 
-<div class="grid"></div>
-<div class="glow"></div>
-
 <div class="main">
 
-<h1>JARVIS</h1>
+<div class="title">JARVIS</div>
 
-<div class="core"></div>
+<div class="topbar">
+
+<div class="panel small">
+<h3>SYSTEM STATUS</h3>
+<p>ONLINE</p>
+<p id="status">Idle</p>
+</div>
+
+<div class="panel small">
+<h3>TIME</h3>
+<p id="clock"></p>
+</div>
+
+</div>
+
+<div class="center">
+
+<div class="side">
 
 <div class="panel">
 
-<div id="status">Idle</div>
-
-<div id="debug">Waiting...</div>
-
-<div class="memory-title">Memory</div>
+<h3>MEMORY CORE</h3>
 
 <div id="memoryList"></div>
 
 </div>
 
+</div>
+
+<div class="core-area">
+
+<div class="core"></div>
+
+</div>
+
+<div class="side">
+
+<div class="panel">
+
+<h3>VOICE INPUT</h3>
+
+<div class="wave"></div>
+
+<div class="logs" id="logs"></div>
+
+</div>
+
+</div>
+
+</div>
+
 <div class="controls">
-<button onclick="startJarvis()">Start</button>
-<button onclick="stopJarvis()">Stop</button>
+
+<button onclick="startJarvis()">START</button>
+
+<button onclick="stopJarvis()">STOP</button>
+
 </div>
 
 </div>
@@ -215,40 +303,64 @@ button:active{
 let recognition;
 let isListening = false;
 
+// CLOCK
+
+setInterval(()=>{
+
+  document.getElementById("clock").innerText =
+  new Date().toLocaleTimeString();
+
+},1000);
+
 // STATUS
+
 function setStatus(text){
+
   document.getElementById("status").innerText = text;
 }
 
-// DEBUG
-function showDebug(text){
-  document.getElementById("debug").innerText =
-    "Heard: " + text;
+// LOGS
+
+function addLog(text){
+
+  let logs = document.getElementById("logs");
+
+  logs.innerHTML += "<div>" + text + "</div>";
+
+  logs.scrollTop = logs.scrollHeight;
 }
 
 // SPEAK
+
 function speak(text){
 
+  addLog("Jarvis: " + text);
+
   let speech =
-    new SpeechSynthesisUtterance(text);
+  new SpeechSynthesisUtterance(text);
 
   speech.rate = 0.95;
 
   speech.onstart = ()=>{
+
     setStatus("Responding...");
   };
 
   speech.onend = ()=>{
+
     if(isListening){
+
       setTimeout(startListening,500);
     }
   };
 
   speechSynthesis.cancel();
+
   speechSynthesis.speak(speech);
 }
 
 // MEMORY SAVE
+
 function rememberFact(fact){
 
   let memory = JSON.parse(
@@ -266,6 +378,7 @@ function rememberFact(fact){
 }
 
 // MEMORY LOAD
+
 function getMemory(){
 
   return JSON.parse(
@@ -273,57 +386,51 @@ function getMemory(){
   );
 }
 
-// UPDATE MEMORY UI
+// MEMORY UI
+
 function updateMemoryUI(){
 
   let memory = getMemory();
 
   let box =
-    document.getElementById("memoryList");
+  document.getElementById("memoryList");
 
   box.innerHTML = "";
 
   memory.forEach(item=>{
 
-    let div = document.createElement("div");
-
-    div.className = "memory-item";
-
-    div.innerText = item;
-
-    box.appendChild(div);
+    box.innerHTML +=
+    '<div class="memory-item">' +
+    item +
+    '</div>';
   });
 }
 
-// VALID INPUT
-function isValidInput(text){
-
-  return text && text.trim().length > 2;
-}
-
 // MATCH
-function match(text, arr){
+
+function match(text,arr){
 
   return arr.some(k=>text.includes(k));
 }
 
-// PROCESS COMMAND
-function processCommand(rawText){
+// COMMAND ENGINE
 
-  let text = rawText.toLowerCase();
+function processCommand(raw){
 
-  showDebug(text);
+  let text = raw.toLowerCase();
 
-  // REMEMBER
+  addLog("User: " + text);
+
+  // MEMORY SAVE
+
   if(
-    text.startsWith("remember that") ||
     text.startsWith("remember")
   ){
 
     let fact = text
-      .replace("remember that","")
-      .replace("remember","")
-      .trim();
+    .replace("remember that","")
+    .replace("remember","")
+    .trim();
 
     if(fact){
 
@@ -336,6 +443,7 @@ function processCommand(rawText){
   }
 
   // MEMORY RECALL
+
   if(
     match(text,[
       "what do you remember",
@@ -348,7 +456,7 @@ function processCommand(rawText){
 
     if(memory.length === 0){
 
-      speak("Memory is empty.");
+      speak("Memory empty.");
 
       return;
     }
@@ -362,10 +470,11 @@ function processCommand(rawText){
   }
 
   // TIME
+
   if(text.includes("time")){
 
     let time =
-      new Date().toLocaleTimeString();
+    new Date().toLocaleTimeString();
 
     speak("The time is " + time);
 
@@ -373,16 +482,20 @@ function processCommand(rawText){
   }
 
   // YOUTUBE
+
   if(text.includes("youtube")){
 
     speak("Opening YouTube");
 
-    window.open("https://youtube.com");
+    window.open(
+      "https://youtube.com"
+    );
 
     return;
   }
 
-  // WHO ARE YOU
+  // IDENTITY
+
   if(
     match(text,[
       "who are you",
@@ -398,6 +511,7 @@ function processCommand(rawText){
   }
 
   // STOP
+
   if(
     match(text,[
       "stop",
@@ -414,15 +528,19 @@ function processCommand(rawText){
   }
 
   // DEFAULT
-  speak("Please repeat clearly.");
+
+  speak(
+    "Command not recognized."
+  );
 }
 
 // START
+
 function startJarvis(){
 
   let SR =
-    window.SpeechRecognition ||
-    window.webkitSpeechRecognition;
+  window.SpeechRecognition ||
+  window.webkitSpeechRecognition;
 
   if(!SR){
 
@@ -445,11 +563,13 @@ function startJarvis(){
 }
 
 // STOP
+
 function stopJarvis(){
 
   isListening = false;
 
   if(recognition){
+
     recognition.stop();
   }
 
@@ -457,6 +577,7 @@ function stopJarvis(){
 }
 
 // LISTEN LOOP
+
 function startListening(){
 
   if(!isListening) return;
@@ -468,14 +589,7 @@ function startListening(){
   recognition.onresult = (event)=>{
 
     let text =
-      event.results[0][0].transcript;
-
-    if(!isValidInput(text)){
-
-      setTimeout(startListening,500);
-
-      return;
-    }
+    event.results[0][0].transcript;
 
     setStatus("Processing...");
 
@@ -498,7 +612,8 @@ function startListening(){
   };
 }
 
-// LOAD MEMORY UI ON START
+// LOAD MEMORY
+
 updateMemoryUI();
 
 </script>
