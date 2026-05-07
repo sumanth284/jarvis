@@ -15,13 +15,13 @@
 }
 
 body{
-  background:#030712;
+  background:#020814;
   overflow:hidden;
   font-family:Arial;
   color:#00e5ff;
 }
 
-/* GRID BACKGROUND */
+/* GRID */
 
 body::before{
   content:"";
@@ -39,94 +39,58 @@ body::before{
 /* MAIN */
 
 .main{
-  position:relative;
   width:100%;
   height:100vh;
+
   display:flex;
-  flex-direction:column;
+  justify-content:center;
   align-items:center;
+
+  position:relative;
 }
 
-/* TITLE */
+/* TOP LEFT DATE TIME */
 
-.title{
+.datetime{
 
-  margin-top:20px;
+  position:absolute;
 
-  font-size:48px;
+  top:20px;
+  left:20px;
 
-  letter-spacing:12px;
+  color:#00e5ff;
 
   text-shadow:
-  0 0 10px #00e5ff,
-  0 0 40px #00e5ff;
+  0 0 10px #00e5ff;
 }
-
-/* TOP PANEL */
-
-.top-panel{
-
-  width:90%;
-
-  display:flex;
-
-  justify-content:space-between;
-
-  margin-top:15px;
-}
-
-.panel{
-
-  width:230px;
-
-  background:#071522bb;
-
-  border:1px solid #00e5ff55;
-
-  border-radius:18px;
-
-  padding:18px;
-
-  backdrop-filter:blur(10px);
-
-  box-shadow:
-  0 0 20px #00e5ff22;
-}
-
-/* DAY DATE TIME */
 
 #day{
-  font-size:22px;
+  font-size:24px;
 }
 
 #date{
-  margin-top:8px;
-  color:#a8ebff;
+  margin-top:5px;
+  color:#9ee8ff;
 }
 
 #clock{
-  margin-top:12px;
+  margin-top:10px;
   font-size:34px;
-
-  text-shadow:
-  0 0 15px #00e5ff;
 }
 
-/* CENTER AREA */
+/* STATUS TEXT */
 
-.center{
+.status{
 
-  flex:1;
+  position:absolute;
 
-  width:100%;
+  top:25px;
+  right:25px;
 
-  display:flex;
+  font-size:20px;
 
-  justify-content:center;
-
-  align-items:center;
-
-  position:relative;
+  text-shadow:
+  0 0 12px #00e5ff;
 }
 
 /* REACTOR */
@@ -154,7 +118,7 @@ body::before{
 
   box-shadow:
   0 0 20px #00e5ff,
-  0 0 60px #00e5ff;
+  0 0 70px #00e5ff;
 
   animation:rotate 12s linear infinite;
 }
@@ -204,7 +168,7 @@ body::before{
   box-shadow:
   0 0 30px #00e5ff,
   0 0 80px #00e5ff,
-  0 0 140px #00e5ff;
+  0 0 150px #00e5ff;
 
   animation:pulse 2s infinite;
 }
@@ -227,18 +191,36 @@ body::before{
   100%{transform:scale(1);}
 }
 
-/* STATUS */
+/* MIC BUTTON */
 
-.status{
+.mic{
 
   position:absolute;
 
-  bottom:180px;
+  bottom:120px;
 
-  font-size:24px;
+  width:85px;
+  height:85px;
 
-  text-shadow:
-  0 0 15px #00e5ff;
+  border-radius:50%;
+
+  border:none;
+
+  background:#00e5ff22;
+
+  color:#00e5ff;
+
+  font-size:38px;
+
+  border:2px solid #00e5ff88;
+
+  box-shadow:
+  0 0 25px #00e5ff,
+  0 0 60px #00e5ff55;
+}
+
+.mic:active{
+  transform:scale(0.92);
 }
 
 /* WAVEFORM */
@@ -247,9 +229,9 @@ body::before{
 
   position:absolute;
 
-  bottom:120px;
+  bottom:35px;
 
-  width:80%;
+  width:100%;
 
   display:flex;
 
@@ -257,7 +239,7 @@ body::before{
 
   align-items:flex-end;
 
-  gap:5px;
+  gap:6px;
 }
 
 .bar{
@@ -275,105 +257,20 @@ body::before{
 }
 
 .bar:nth-child(1){height:20px;animation-delay:0s;}
-.bar:nth-child(2){height:40px;animation-delay:0.1s;}
-.bar:nth-child(3){height:65px;animation-delay:0.2s;}
+.bar:nth-child(2){height:45px;animation-delay:0.1s;}
+.bar:nth-child(3){height:70px;animation-delay:0.2s;}
 .bar:nth-child(4){height:35px;animation-delay:0.3s;}
 .bar:nth-child(5){height:80px;animation-delay:0.4s;}
-.bar:nth-child(6){height:40px;animation-delay:0.5s;}
-.bar:nth-child(7){height:70px;animation-delay:0.6s;}
+.bar:nth-child(6){height:45px;animation-delay:0.5s;}
+.bar:nth-child(7){height:65px;animation-delay:0.6s;}
 .bar:nth-child(8){height:30px;animation-delay:0.7s;}
-.bar:nth-child(9){height:60px;animation-delay:0.8s;}
+.bar:nth-child(9){height:55px;animation-delay:0.8s;}
 .bar:nth-child(10){height:25px;animation-delay:0.9s;}
 
 @keyframes wave{
   0%{transform:scaleY(0.5);}
-  50%{transform:scaleY(1.4);}
+  50%{transform:scaleY(1.5);}
   100%{transform:scaleY(0.5);}
-}
-
-/* MEMORY CORE BOTTOM */
-
-.memory-panel{
-
-  position:absolute;
-
-  bottom:20px;
-
-  width:90%;
-
-  max-width:700px;
-
-  background:#071522cc;
-
-  border:1px solid #00e5ff55;
-
-  border-radius:20px;
-
-  padding:15px;
-
-  backdrop-filter:blur(10px);
-
-  box-shadow:
-  0 0 20px #00e5ff22;
-}
-
-.memory-list{
-
-  display:flex;
-
-  gap:10px;
-
-  overflow:auto;
-
-  margin-top:10px;
-}
-
-.memory-item{
-
-  min-width:180px;
-
-  padding:10px;
-
-  border-left:2px solid #00e5ff;
-
-  background:#00e5ff11;
-
-  border-radius:10px;
-}
-
-/* MIC BUTTON */
-
-.mic-button{
-
-  position:absolute;
-
-  right:25px;
-
-  bottom:160px;
-
-  width:75px;
-
-  height:75px;
-
-  border-radius:50%;
-
-  border:none;
-
-  background:#00e5ff22;
-
-  color:#00e5ff;
-
-  font-size:34px;
-
-  box-shadow:
-  0 0 20px #00e5ff,
-  0 0 50px #00e5ff55;
-
-  border:2px solid #00e5ff88;
-}
-
-.mic-button:active{
-  transform:scale(0.92);
 }
 
 </style>
@@ -384,33 +281,25 @@ body::before{
 
 <div class="main">
 
-<div class="title">JARVIS</div>
+<!-- DATE TIME -->
 
-<div class="top-panel">
+<div class="datetime">
 
-<div class="panel">
+<div id="day"></div>
 
-<h3>SYSTEM STATUS</h3>
+<div id="date"></div>
 
-<p id="statusText">ONLINE</p>
-
-</div>
-
-<div class="panel">
-
-<h3>DATE & TIME</h3>
-
-<p id="day"></p>
-
-<p id="date"></p>
-
-<p id="clock"></p>
+<div id="clock"></div>
 
 </div>
 
+<!-- STATUS -->
+
+<div class="status" id="status">
+ONLINE
 </div>
 
-<div class="center">
+<!-- REACTOR -->
 
 <div class="reactor">
 
@@ -424,9 +313,14 @@ body::before{
 
 </div>
 
-<div class="status" id="status">
-Idle
-</div>
+<!-- MIC -->
+
+<button class="mic"
+onclick="startJarvis()">
+🎤
+</button>
+
+<!-- WAVEFORM -->
 
 <div class="wave-container">
 
@@ -440,22 +334,6 @@ Idle
 <div class="bar"></div>
 <div class="bar"></div>
 <div class="bar"></div>
-
-</div>
-
-</div>
-
-<button class="mic-button"
-onclick="startJarvis()">
-🎤
-</button>
-
-<div class="memory-panel">
-
-<h3>MEMORY CORE</h3>
-
-<div class="memory-list"
-id="memoryList"></div>
 
 </div>
 
@@ -531,7 +409,7 @@ function speak(text){
 
   speech.onstart = ()=>{
 
-    setStatus("Responding...");
+    setStatus("RESPONDING...");
   };
 
   speech.onend = ()=>{
@@ -561,8 +439,6 @@ function rememberFact(fact){
     "jarvis_memory",
     JSON.stringify(memory)
   );
-
-  updateMemoryUI();
 }
 
 function getMemory(){
@@ -570,24 +446,6 @@ function getMemory(){
   return JSON.parse(
     localStorage.getItem("jarvis_memory") || "[]"
   );
-}
-
-function updateMemoryUI(){
-
-  let memory = getMemory();
-
-  let box =
-    document.getElementById("memoryList");
-
-  box.innerHTML = "";
-
-  memory.forEach(item=>{
-
-    box.innerHTML +=
-    '<div class="memory-item">' +
-    item +
-    '</div>';
-  });
 }
 
 /* MATCH */
@@ -743,7 +601,7 @@ function startListening(){
 
   if(!isListening) return;
 
-  setStatus("Listening...");
+  setStatus("LISTENING...");
 
   recognition.start();
 
@@ -752,14 +610,14 @@ function startListening(){
     let text =
       event.results[0][0].transcript;
 
-    setStatus("Processing...");
+    setStatus("PROCESSING...");
 
     processCommand(text);
   };
 
   recognition.onerror = ()=>{
 
-    setStatus("Retrying...");
+    setStatus("RETRYING...");
 
     setTimeout(startListening,1000);
   };
@@ -772,10 +630,6 @@ function startListening(){
     }
   };
 }
-
-/* LOAD MEMORY */
-
-updateMemoryUI();
 
 </script>
 
