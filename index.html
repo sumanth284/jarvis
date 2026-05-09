@@ -83,102 +83,144 @@ body{
   align-items:center;
 }
 
-/* REACTOR */
+/* ATOM REACTOR */
 
 .reactor{
 
   position:relative;
 
-  width:340px;
-  height:340px;
+  width:420px;
+  height:420px;
+
+  display:flex;
+  justify-content:center;
+  align-items:center;
 }
 
-/* OUTER RING */
-
-.outer-ring{
-
-  position:absolute;
-
-  width:100%;
-  height:100%;
-
-  border-radius:50%;
-
-  border:3px solid #00e5ff;
-
-  box-shadow:
-  0 0 20px #00e5ff,
-  0 0 60px #00e5ff;
-
-  animation:rotate 12s linear infinite;
-}
-
-/* MIDDLE RING */
-
-.middle-ring{
-
-  position:absolute;
-
-  inset:35px;
-
-  border-radius:50%;
-
-  border:2px solid #00e5ff;
-
-  animation:rotateReverse 8s linear infinite;
-}
-
-/* INNER RING */
-
-.inner-ring{
-
-  position:absolute;
-
-  inset:80px;
-
-  border-radius:50%;
-
-  border:2px solid #00e5ff;
-
-  animation:rotate 6s linear infinite;
-}
-
-/* CORE */
+/* NUCLEUS */
 
 .core{
 
-  position:absolute;
-
-  inset:125px;
+  width:90px;
+  height:90px;
 
   border-radius:50%;
 
   background:#00e5ff;
 
+  position:absolute;
+
   box-shadow:
   0 0 30px #00e5ff,
   0 0 80px #00e5ff,
-  0 0 140px #00e5ff;
+  0 0 150px #00e5ff;
 
   animation:pulse 2s infinite;
+}
+
+/* SHELLS */
+
+.shell{
+
+  position:absolute;
+
+  border:2px solid #00e5ff88;
+
+  border-radius:50%;
+}
+
+/* SHELL 1 */
+
+.shell1{
+
+  width:180px;
+  height:180px;
+
+  animation:rotate 6s linear infinite;
+}
+
+/* SHELL 2 */
+
+.shell2{
+
+  width:260px;
+  height:260px;
+
+  transform:rotateX(70deg);
+
+  animation:rotateReverse 10s linear infinite;
+}
+
+/* SHELL 3 */
+
+.shell3{
+
+  width:340px;
+  height:340px;
+
+  transform:rotateY(70deg);
+
+  animation:rotate 14s linear infinite;
+}
+
+/* ELECTRONS */
+
+.electron{
+
+  width:14px;
+  height:14px;
+
+  border-radius:50%;
+
+  background:#00e5ff;
+
+  position:absolute;
+
+  top:-7px;
+  left:50%;
+
+  transform:translateX(-50%);
+
+  box-shadow:
+  0 0 15px #00e5ff,
+  0 0 30px #00e5ff;
 }
 
 /* ANIMATIONS */
 
 @keyframes rotate{
-  from{transform:rotate(0deg);}
-  to{transform:rotate(360deg);}
+  from{
+    transform:rotate(0deg);
+  }
+
+  to{
+    transform:rotate(360deg);
+  }
 }
 
 @keyframes rotateReverse{
-  from{transform:rotate(360deg);}
-  to{transform:rotate(0deg);}
+  from{
+    transform:rotate(360deg);
+  }
+
+  to{
+    transform:rotate(0deg);
+  }
 }
 
 @keyframes pulse{
-  0%{transform:scale(1);}
-  50%{transform:scale(1.08);}
-  100%{transform:scale(1);}
+
+  0%{
+    transform:scale(1);
+  }
+
+  50%{
+    transform:scale(1.08);
+  }
+
+  100%{
+    transform:scale(1);
+  }
 }
 
 /* STATUS */
@@ -240,9 +282,18 @@ body{
 .bar:nth-child(10){height:25px;animation-delay:0.9s;}
 
 @keyframes wave{
-  0%{transform:scaleY(0.5);}
-  50%{transform:scaleY(1.4);}
-  100%{transform:scaleY(0.5);}
+
+  0%{
+    transform:scaleY(0.5);
+  }
+
+  50%{
+    transform:scaleY(1.4);
+  }
+
+  100%{
+    transform:scaleY(0.5);
+  }
 }
 
 /* MIC BUTTON */
@@ -290,8 +341,6 @@ body{
 
 <body>
 
-<!-- DATE TIME -->
-
 <div class="datetime">
 
 <div id="day"></div>
@@ -302,23 +351,25 @@ body{
 
 </div>
 
-<!-- ONLINE -->
-
 <div class="online">
 ONLINE
 </div>
-
-<!-- CENTER -->
 
 <div class="center">
 
 <div class="reactor">
 
-<div class="outer-ring"></div>
+<div class="shell shell1">
+<div class="electron"></div>
+</div>
 
-<div class="middle-ring"></div>
+<div class="shell shell2">
+<div class="electron"></div>
+</div>
 
-<div class="inner-ring"></div>
+<div class="shell shell3">
+<div class="electron"></div>
+</div>
 
 <div class="core"></div>
 
@@ -329,8 +380,6 @@ Idle
 </div>
 
 </div>
-
-<!-- WAVEFORM -->
 
 <div class="wave-container">
 
@@ -347,8 +396,6 @@ Idle
 
 </div>
 
-<!-- MIC -->
-
 <button class="mic-button"
 onclick="startJarvis()">
 🎤
@@ -356,313 +403,7 @@ onclick="startJarvis()">
 
 <script>
 
-let recognition;
-
-let isListening = false;
-
-/* DATE TIME */
-
-function updateDateTime(){
-
-  const now = new Date();
-
-  const days = [
-    "Sunday",
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday"
-  ];
-
-  document.getElementById("day").innerText =
-    days[now.getDay()];
-
-  document.getElementById("date").innerText =
-    now.toLocaleDateString(
-      "en-US",
-      {
-        day:"numeric",
-        month:"long",
-        year:"numeric"
-      }
-    );
-
-  document.getElementById("clock").innerText =
-    now.toLocaleTimeString(
-      "en-US",
-      {
-        hour:"numeric",
-        minute:"2-digit",
-        second:"2-digit",
-        hour12:true
-      }
-    );
-}
-
-setInterval(updateDateTime,1000);
-
-updateDateTime();
-
-/* STATUS */
-
-function setStatus(text){
-
-  document.getElementById("status").innerText =
-    text;
-}
-
-/* SPEAK */
-
-function speak(text){
-
-  let speech =
-    new SpeechSynthesisUtterance(text);
-
-  speech.rate = 0.95;
-
-  speech.onstart = ()=>{
-
-    setStatus("Responding...");
-  };
-
-  speech.onend = ()=>{
-
-    if(isListening){
-
-      setTimeout(startListening,500);
-    }
-  };
-
-  speechSynthesis.cancel();
-
-  speechSynthesis.speak(speech);
-}
-
-/* MEMORY */
-
-function formatMemory(text){
-
-  text = text.trim();
-
-  if(text.startsWith("i ")){
-
-    return text.replace(/^i /,"you ");
-  }
-
-  if(text.startsWith("my ")){
-
-    return text.replace(/^my /,"your ");
-  }
-
-  return text;
-}
-
-function rememberFact(fact){
-
-  let memory = JSON.parse(
-    localStorage.getItem("jarvis_memory") || "[]"
-  );
-
-  fact = formatMemory(fact);
-
-  memory.push(fact);
-
-  localStorage.setItem(
-    "jarvis_memory",
-    JSON.stringify(memory)
-  );
-}
-
-function getMemory(){
-
-  return JSON.parse(
-    localStorage.getItem("jarvis_memory") || "[]"
-  );
-}
-
-/* MATCH */
-
-function match(text,arr){
-
-  return arr.some(
-    k=>text.includes(k)
-  );
-}
-
-/* COMMAND ENGINE */
-
-function processCommand(raw){
-
-  let text = raw.toLowerCase();
-
-  /* MEMORY SAVE */
-
-  if(text.startsWith("remember")){
-
-    let fact = text
-      .replace("remember that","")
-      .replace("remember","")
-      .trim();
-
-    if(fact){
-
-      rememberFact(fact);
-
-      speak("Memory saved.");
-
-      return;
-    }
-  }
-
-  /* MEMORY RECALL */
-
-  if(
-    match(text,[
-      "what do you remember",
-      "memory"
-    ])
-  ){
-
-    let memory = getMemory();
-
-    if(memory.length === 0){
-
-      speak("Memory empty.");
-
-      return;
-    }
-
-    speak(
-      memory.join(". ")
-    );
-
-    return;
-  }
-
-  /* TIME */
-
-  if(text.includes("time")){
-
-    let time =
-      new Date().toLocaleTimeString(
-        "en-US",
-        {
-          hour:"numeric",
-          minute:"2-digit",
-          hour12:true
-        }
-      );
-
-    speak(
-      "The time is " + time
-    );
-
-    return;
-  }
-
-  /* IDENTITY */
-
-  if(
-    match(text,[
-      "who are you",
-      "your name"
-    ])
-  ){
-
-    speak(
-      "I am Jarvis."
-    );
-
-    return;
-  }
-
-  /* YOUTUBE */
-
-  if(text.includes("youtube")){
-
-    speak("Opening YouTube.");
-
-    window.open(
-      "https://youtube.com"
-    );
-
-    return;
-  }
-
-  /* DEFAULT */
-
-  speak(
-    "Command not recognized."
-  );
-}
-
-/* START */
-
-function startJarvis(){
-
-  if(isListening) return;
-
-  let SR =
-    window.SpeechRecognition ||
-    window.webkitSpeechRecognition;
-
-  if(!SR){
-
-    alert("Use Chrome browser");
-
-    return;
-  }
-
-  recognition = new SR();
-
-  recognition.lang = "en-US";
-
-  recognition.continuous = false;
-
-  recognition.interimResults = false;
-
-  isListening = true;
-
-  speak("Jarvis activated.");
-}
-
-/* LISTEN LOOP */
-
-function startListening(){
-
-  if(!isListening) return;
-
-  setStatus("Listening...");
-
-  recognition.start();
-
-  recognition.onresult = (event)=>{
-
-    let text =
-      event.results[0][0].transcript;
-
-    setStatus("Processing...");
-
-    processCommand(text);
-  };
-
-  recognition.onerror = ()=>{
-
-    setStatus("Retrying...");
-
-    setTimeout(startListening,1000);
-  };
-
-  recognition.onend = ()=>{
-
-    if(isListening){
-
-      setTimeout(startListening,500);
-    }
-  };
-}
+/* KEEP YOUR EXISTING JAVASCRIPT HERE */
 
 </script>
 
