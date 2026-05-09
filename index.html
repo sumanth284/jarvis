@@ -21,22 +21,7 @@ body{
   color:#00e5ff;
 }
 
-/* GRID */
-
-body::before{
-  content:"";
-  position:absolute;
-  width:100%;
-  height:100%;
-
-  background:
-  linear-gradient(#00e5ff10 1px, transparent 1px),
-  linear-gradient(90deg,#00e5ff10 1px, transparent 1px);
-
-  background-size:40px 40px;
-}
-
-/* TOP LEFT DATE */
+/* DATE TIME */
 
 .datetime{
 
@@ -293,6 +278,7 @@ body::before{
 }
 
 .mic-button:active{
+
   transform:
   translateX(-50%)
   scale(0.92);
@@ -456,11 +442,30 @@ function speak(text){
 
 /* MEMORY */
 
+function formatMemory(text){
+
+  text = text.trim();
+
+  if(text.startsWith("i ")){
+
+    return text.replace(/^i /,"you ");
+  }
+
+  if(text.startsWith("my ")){
+
+    return text.replace(/^my /,"your ");
+  }
+
+  return text;
+}
+
 function rememberFact(fact){
 
   let memory = JSON.parse(
     localStorage.getItem("jarvis_memory") || "[]"
   );
+
+  fact = formatMemory(fact);
 
   memory.push(fact);
 
@@ -492,7 +497,7 @@ function processCommand(raw){
 
   let text = raw.toLowerCase();
 
-  /* MEMORY */
+  /* MEMORY SAVE */
 
   if(text.startsWith("remember")){
 
@@ -511,7 +516,7 @@ function processCommand(raw){
     }
   }
 
-  /* RECALL */
+  /* MEMORY RECALL */
 
   if(
     match(text,[
@@ -530,7 +535,6 @@ function processCommand(raw){
     }
 
     speak(
-      "I remember " +
       memory.join(". ")
     );
 
