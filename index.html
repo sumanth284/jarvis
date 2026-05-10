@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,22 +18,27 @@
 body{
   background:#030712;
   overflow:hidden;
-  font-family:Arial, sans-serif;
+  font-family:Arial,sans-serif;
   color:#00e5ff;
 }
 
 /* DATE TIME */
 
 .datetime{
+
   position:absolute;
+
   top:20px;
   left:20px;
-  z-index:10;
-  text-shadow:0 0 10px #00e5ff;
+
+  z-index:100;
+
+  text-shadow:
+  0 0 10px #00e5ff;
 }
 
 #day{
-  font-size:24px;
+  font-size:22px;
 }
 
 #date{
@@ -42,17 +48,23 @@ body{
 
 #clock{
   margin-top:8px;
-  font-size:34px;
+  font-size:30px;
 }
 
 /* ONLINE */
 
 .online{
+
   position:absolute;
+
   top:25px;
   right:25px;
-  font-size:20px;
+
   color:#00ff9d;
+
+  font-size:20px;
+
+  z-index:100;
 
   text-shadow:
   0 0 10px #00ff9d;
@@ -61,105 +73,112 @@ body{
 /* CENTER */
 
 .center{
+
   position:absolute;
+
   width:100%;
   height:100%;
+
   display:flex;
+
   justify-content:center;
+
   align-items:center;
 }
 
 /* REACTOR */
 
 .reactor{
+
   position:relative;
-  width:420px;
-  height:420px;
+
+  width:320px;
+  height:320px;
+
   display:flex;
+
   justify-content:center;
+
   align-items:center;
 }
 
 /* CORE */
 
 .core{
+
   position:absolute;
-  width:90px;
-  height:90px;
+
+  width:80px;
+  height:80px;
+
   border-radius:50%;
+
   background:#00e5ff;
 
   box-shadow:
   0 0 30px #00e5ff,
   0 0 80px #00e5ff,
-  0 0 150px #00e5ff;
+  0 0 140px #00e5ff;
 
-  animation:pulse 2s infinite ease-in-out;
+  animation:pulse 2s infinite;
 }
 
 /* ORBITS */
 
-.orbit-wrap{
-  position:absolute;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-}
-
 .orbit{
-  position:relative;
-  border:2px solid #00e5ff66;
+
+  position:absolute;
+
+  border:2px solid #00e5ff55;
+
   border-radius:50%;
 }
 
 /* ORBIT 1 */
 
-.orbit-wrap1{
-  width:180px;
-  height:180px;
-  animation:spin1 6s linear infinite;
-}
-
 .orbit1{
-  width:180px;
-  height:180px;
+
+  width:140px;
+  height:140px;
+
+  animation:spin1 6s linear infinite;
 }
 
 /* ORBIT 2 */
 
-.orbit-wrap2{
-  width:270px;
-  height:270px;
-  animation:spin2 10s linear infinite;
-  transform:rotate(60deg);
-}
-
 .orbit2{
-  width:270px;
-  height:270px;
+
+  width:220px;
+  height:220px;
+
+  transform:rotateX(75deg);
+
+  animation:spin2 9s linear infinite;
 }
 
 /* ORBIT 3 */
 
-.orbit-wrap3{
-  width:360px;
-  height:360px;
-  animation:spin3 14s linear infinite;
-  transform:rotate(120deg);
-}
-
 .orbit3{
-  width:360px;
-  height:360px;
+
+  width:300px;
+  height:300px;
+
+  transform:rotateY(75deg);
+
+  animation:spin3 12s linear infinite;
 }
 
 /* ELECTRONS */
 
 .electron{
+
   position:absolute;
+
   width:14px;
   height:14px;
+
   border-radius:50%;
+
   background:#00e5ff;
 
   top:-7px;
@@ -175,9 +194,12 @@ body{
 /* STATUS */
 
 .status{
+
   position:absolute;
+
   bottom:170px;
-  font-size:24px;
+
+  font-size:22px;
 
   text-shadow:
   0 0 15px #00e5ff;
@@ -186,18 +208,28 @@ body{
 /* WAVEFORM */
 
 .wave-container{
+
   position:absolute;
+
   bottom:70px;
+
   width:100%;
+
   display:flex;
+
   justify-content:center;
+
   align-items:flex-end;
+
   gap:5px;
 }
 
 .bar{
+
   width:6px;
+
   background:#00e5ff;
+
   border-radius:10px;
 
   animation:wave 1s infinite ease-in-out;
@@ -217,18 +249,22 @@ body{
 .bar:nth-child(9){height:60px;animation-delay:0.8s;}
 .bar:nth-child(10){height:25px;animation-delay:0.9s;}
 
-/* MIC BUTTON */
+/* MIC */
 
 .mic-button{
+
   position:absolute;
+
   bottom:140px;
   left:50%;
+
   transform:translateX(-50%);
 
   width:80px;
   height:80px;
 
   border-radius:50%;
+
   border:none;
 
   background:#00e5ff22;
@@ -242,37 +278,71 @@ body{
   box-shadow:
   0 0 20px #00e5ff,
   0 0 50px #00e5ff55;
-
-  cursor:pointer;
 }
 
 /* ANIMATIONS */
 
 @keyframes pulse{
-  0%{transform:scale(1);}
-  50%{transform:scale(1.08);}
-  100%{transform:scale(1);}
+
+  0%{
+    transform:scale(1);
+  }
+
+  50%{
+    transform:scale(1.08);
+  }
+
+  100%{
+    transform:scale(1);
+  }
 }
 
 @keyframes spin1{
-  from{transform:rotate(0deg);}
-  to{transform:rotate(360deg);}
+
+  from{
+    transform:rotate(0deg);
+  }
+
+  to{
+    transform:rotate(360deg);
+  }
 }
 
 @keyframes spin2{
-  from{transform:rotate(60deg) rotate(360deg);}
-  to{transform:rotate(60deg) rotate(0deg);}
+
+  from{
+    transform:rotateX(75deg) rotate(0deg);
+  }
+
+  to{
+    transform:rotateX(75deg) rotate(360deg);
+  }
 }
 
 @keyframes spin3{
-  from{transform:rotate(120deg) rotate(0deg);}
-  to{transform:rotate(120deg) rotate(360deg);}
+
+  from{
+    transform:rotateY(75deg) rotate(0deg);
+  }
+
+  to{
+    transform:rotateY(75deg) rotate(360deg);
+  }
 }
 
 @keyframes wave{
-  0%{transform:scaleY(0.5);}
-  50%{transform:scaleY(1.4);}
-  100%{transform:scaleY(0.5);}
+
+  0%{
+    transform:scaleY(0.5);
+  }
+
+  50%{
+    transform:scaleY(1.4);
+  }
+
+  100%{
+    transform:scaleY(0.5);
+  }
 }
 
 </style>
@@ -281,38 +351,40 @@ body{
 
 <body>
 
+<!-- DATE TIME -->
+
 <div class="datetime">
 
 <div id="day"></div>
+
 <div id="date"></div>
+
 <div id="clock"></div>
 
 </div>
+
+<!-- ONLINE -->
 
 <div class="online">
 ONLINE
 </div>
 
+<!-- CENTER -->
+
 <div class="center">
 
 <div class="reactor">
 
-<div class="orbit-wrap orbit-wrap1">
 <div class="orbit orbit1">
 <div class="electron"></div>
 </div>
-</div>
 
-<div class="orbit-wrap orbit-wrap2">
 <div class="orbit orbit2">
 <div class="electron"></div>
 </div>
-</div>
 
-<div class="orbit-wrap orbit-wrap3">
 <div class="orbit orbit3">
 <div class="electron"></div>
-</div>
 </div>
 
 <div class="core"></div>
@@ -324,6 +396,8 @@ Idle
 </div>
 
 </div>
+
+<!-- WAVEFORM -->
 
 <div class="wave-container">
 
@@ -340,15 +414,18 @@ Idle
 
 </div>
 
-<button class="mic-button" onclick="startJarvis()">
+<!-- MIC -->
+
+<button class="mic-button"
+onclick="startJarvis()">
 🎤
 </button>
 
 <script>
 
 let recognition;
+
 let isListening = false;
-let restartTimeout;
 
 /* DATE TIME */
 
@@ -394,7 +471,9 @@ updateDateTime();
 /* STATUS */
 
 function setStatus(text){
-  document.getElementById("status").innerText = text;
+
+  document.getElementById("status").innerText =
+    text;
 }
 
 /* SPEAK */
@@ -409,6 +488,7 @@ function speak(text){
   speech.rate = 0.95;
 
   speech.onstart = ()=>{
+
     setStatus("Responding...");
   };
 
@@ -416,12 +496,9 @@ function speak(text){
 
     if(isListening){
 
-      clearTimeout(restartTimeout);
-
-      restartTimeout =
-        setTimeout(()=>{
-          startListening();
-        },1000);
+      setTimeout(()=>{
+        startListening();
+      },1000);
     }
   };
 
@@ -435,10 +512,12 @@ function formatMemory(text){
   text = text.trim();
 
   if(text.startsWith("i ")){
+
     text = text.replace(/^i /,"you ");
   }
 
   if(text.startsWith("my ")){
+
     text = text.replace(/^my /,"your ");
   }
 
@@ -587,17 +666,6 @@ function processCommand(raw){
     return;
   }
 
-  /* YOUTUBE */
-
-  if(text.includes("youtube")){
-
-    speak("Opening YouTube.");
-
-    window.open("https://youtube.com");
-
-    return;
-  }
-
   /* DEFAULT */
 
   speak("Command not recognized.");
@@ -628,30 +696,7 @@ function startJarvis(){
 
   recognition.interimResults = false;
 
-  recognition.maxAlternatives = 1;
-
   isListening = true;
-
-  speak("Jarvis activated.");
-}
-
-/* LISTEN */
-
-function startListening(){
-
-  if(!isListening) return;
-
-  setStatus("Listening...");
-
-  try{
-    recognition.start();
-  }
-  catch(err){}
-}
-
-/* EVENTS */
-
-function setupRecognition(){
 
   recognition.onresult = (event)=>{
 
@@ -667,38 +712,38 @@ function setupRecognition(){
 
     setStatus("Retrying...");
 
-    clearTimeout(restartTimeout);
-
-    restartTimeout =
-      setTimeout(()=>{
-        startListening();
-      },1500);
+    setTimeout(()=>{
+      startListening();
+    },1500);
   };
 
   recognition.onend = ()=>{
 
     if(isListening){
 
-      clearTimeout(restartTimeout);
-
-      restartTimeout =
-        setTimeout(()=>{
-          startListening();
-        },1000);
+      setTimeout(()=>{
+        startListening();
+      },1000);
     }
   };
+
+  speak("Jarvis activated.");
 }
 
-/* OVERRIDE START */
+/* LISTEN */
 
-const oldStart = startJarvis;
+function startListening(){
 
-startJarvis = function(){
+  if(!isListening) return;
 
-  oldStart();
+  setStatus("Listening...");
 
-  setupRecognition();
-};
+  try{
+
+    recognition.start();
+
+  }catch(err){}
+}
 
 </script>
 
