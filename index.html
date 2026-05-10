@@ -17,23 +17,18 @@
 body{
   background:#030712;
   overflow:hidden;
-  font-family:Arial;
+  font-family:Arial, sans-serif;
   color:#00e5ff;
 }
 
 /* DATE TIME */
 
 .datetime{
-
   position:absolute;
-
   top:20px;
   left:20px;
-
-  z-index:5;
-
-  text-shadow:
-  0 0 10px #00e5ff;
+  z-index:10;
+  text-shadow:0 0 10px #00e5ff;
 }
 
 #day{
@@ -53,14 +48,10 @@ body{
 /* ONLINE */
 
 .online{
-
   position:absolute;
-
   top:25px;
   right:25px;
-
-  font-size:22px;
-
+  font-size:20px;
   color:#00ff9d;
 
   text-shadow:
@@ -70,111 +61,106 @@ body{
 /* CENTER */
 
 .center{
-
   position:absolute;
-
   width:100%;
   height:100%;
-
   display:flex;
-
   justify-content:center;
-
   align-items:center;
 }
 
-/* ATOM REACTOR */
+/* REACTOR */
 
 .reactor{
-
   position:relative;
-
   width:420px;
   height:420px;
-
   display:flex;
   justify-content:center;
   align-items:center;
 }
 
-/* NUCLEUS */
+/* CORE */
 
 .core{
-
+  position:absolute;
   width:90px;
   height:90px;
-
   border-radius:50%;
-
   background:#00e5ff;
-
-  position:absolute;
 
   box-shadow:
   0 0 30px #00e5ff,
   0 0 80px #00e5ff,
   0 0 150px #00e5ff;
 
-  animation:pulse 2s infinite;
+  animation:pulse 2s infinite ease-in-out;
 }
 
-/* SHELLS */
+/* ORBITS */
 
-.shell{
-
+.orbit-wrap{
   position:absolute;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
 
-  border:2px solid #00e5ff88;
-
+.orbit{
+  position:relative;
+  border:2px solid #00e5ff66;
   border-radius:50%;
 }
 
-/* SHELL 1 */
+/* ORBIT 1 */
 
-.shell1{
-
+.orbit-wrap1{
   width:180px;
   height:180px;
-
-  animation:rotate 6s linear infinite;
+  animation:spin1 6s linear infinite;
 }
 
-/* SHELL 2 */
-
-.shell2{
-
-  width:260px;
-  height:260px;
-
-  transform:rotateX(70deg);
-
-  animation:rotateReverse 10s linear infinite;
+.orbit1{
+  width:180px;
+  height:180px;
 }
 
-/* SHELL 3 */
+/* ORBIT 2 */
 
-.shell3{
+.orbit-wrap2{
+  width:270px;
+  height:270px;
+  animation:spin2 10s linear infinite;
+  transform:rotate(60deg);
+}
 
-  width:340px;
-  height:340px;
+.orbit2{
+  width:270px;
+  height:270px;
+}
 
-  transform:rotateY(70deg);
+/* ORBIT 3 */
 
-  animation:rotate 14s linear infinite;
+.orbit-wrap3{
+  width:360px;
+  height:360px;
+  animation:spin3 14s linear infinite;
+  transform:rotate(120deg);
+}
+
+.orbit3{
+  width:360px;
+  height:360px;
 }
 
 /* ELECTRONS */
 
 .electron{
-
+  position:absolute;
   width:14px;
   height:14px;
-
   border-radius:50%;
-
   background:#00e5ff;
-
-  position:absolute;
 
   top:-7px;
   left:50%;
@@ -186,51 +172,11 @@ body{
   0 0 30px #00e5ff;
 }
 
-/* ANIMATIONS */
-
-@keyframes rotate{
-  from{
-    transform:rotate(0deg);
-  }
-
-  to{
-    transform:rotate(360deg);
-  }
-}
-
-@keyframes rotateReverse{
-  from{
-    transform:rotate(360deg);
-  }
-
-  to{
-    transform:rotate(0deg);
-  }
-}
-
-@keyframes pulse{
-
-  0%{
-    transform:scale(1);
-  }
-
-  50%{
-    transform:scale(1.08);
-  }
-
-  100%{
-    transform:scale(1);
-  }
-}
-
 /* STATUS */
 
 .status{
-
   position:absolute;
-
   bottom:170px;
-
   font-size:24px;
 
   text-shadow:
@@ -240,28 +186,18 @@ body{
 /* WAVEFORM */
 
 .wave-container{
-
   position:absolute;
-
   bottom:70px;
-
   width:100%;
-
   display:flex;
-
   justify-content:center;
-
   align-items:flex-end;
-
   gap:5px;
 }
 
 .bar{
-
   width:6px;
-
   background:#00e5ff;
-
   border-radius:10px;
 
   animation:wave 1s infinite ease-in-out;
@@ -281,38 +217,18 @@ body{
 .bar:nth-child(9){height:60px;animation-delay:0.8s;}
 .bar:nth-child(10){height:25px;animation-delay:0.9s;}
 
-@keyframes wave{
-
-  0%{
-    transform:scaleY(0.5);
-  }
-
-  50%{
-    transform:scaleY(1.4);
-  }
-
-  100%{
-    transform:scaleY(0.5);
-  }
-}
-
 /* MIC BUTTON */
 
 .mic-button{
-
   position:absolute;
-
   bottom:140px;
-
   left:50%;
-
   transform:translateX(-50%);
 
   width:80px;
   height:80px;
 
   border-radius:50%;
-
   border:none;
 
   background:#00e5ff22;
@@ -326,13 +242,37 @@ body{
   box-shadow:
   0 0 20px #00e5ff,
   0 0 50px #00e5ff55;
+
+  cursor:pointer;
 }
 
-.mic-button:active{
+/* ANIMATIONS */
 
-  transform:
-  translateX(-50%)
-  scale(0.92);
+@keyframes pulse{
+  0%{transform:scale(1);}
+  50%{transform:scale(1.08);}
+  100%{transform:scale(1);}
+}
+
+@keyframes spin1{
+  from{transform:rotate(0deg);}
+  to{transform:rotate(360deg);}
+}
+
+@keyframes spin2{
+  from{transform:rotate(60deg) rotate(360deg);}
+  to{transform:rotate(60deg) rotate(0deg);}
+}
+
+@keyframes spin3{
+  from{transform:rotate(120deg) rotate(0deg);}
+  to{transform:rotate(120deg) rotate(360deg);}
+}
+
+@keyframes wave{
+  0%{transform:scaleY(0.5);}
+  50%{transform:scaleY(1.4);}
+  100%{transform:scaleY(0.5);}
 }
 
 </style>
@@ -344,9 +284,7 @@ body{
 <div class="datetime">
 
 <div id="day"></div>
-
 <div id="date"></div>
-
 <div id="clock"></div>
 
 </div>
@@ -359,16 +297,22 @@ ONLINE
 
 <div class="reactor">
 
-<div class="shell shell1">
+<div class="orbit-wrap orbit-wrap1">
+<div class="orbit orbit1">
 <div class="electron"></div>
 </div>
-
-<div class="shell shell2">
-<div class="electron"></div>
 </div>
 
-<div class="shell shell3">
+<div class="orbit-wrap orbit-wrap2">
+<div class="orbit orbit2">
 <div class="electron"></div>
+</div>
+</div>
+
+<div class="orbit-wrap orbit-wrap3">
+<div class="orbit orbit3">
+<div class="electron"></div>
+</div>
 </div>
 
 <div class="core"></div>
@@ -396,14 +340,365 @@ Idle
 
 </div>
 
-<button class="mic-button"
-onclick="startJarvis()">
+<button class="mic-button" onclick="startJarvis()">
 🎤
 </button>
 
 <script>
 
-/* KEEP YOUR EXISTING JAVASCRIPT HERE */
+let recognition;
+let isListening = false;
+let restartTimeout;
+
+/* DATE TIME */
+
+function updateDateTime(){
+
+  const now = new Date();
+
+  const days = [
+    "Sunday","Monday","Tuesday",
+    "Wednesday","Thursday",
+    "Friday","Saturday"
+  ];
+
+  document.getElementById("day").innerText =
+    days[now.getDay()];
+
+  document.getElementById("date").innerText =
+    now.toLocaleDateString(
+      "en-US",
+      {
+        day:"numeric",
+        month:"long",
+        year:"numeric"
+      }
+    );
+
+  document.getElementById("clock").innerText =
+    now.toLocaleTimeString(
+      "en-US",
+      {
+        hour:"numeric",
+        minute:"2-digit",
+        second:"2-digit",
+        hour12:true
+      }
+    );
+}
+
+setInterval(updateDateTime,1000);
+
+updateDateTime();
+
+/* STATUS */
+
+function setStatus(text){
+  document.getElementById("status").innerText = text;
+}
+
+/* SPEAK */
+
+function speak(text){
+
+  speechSynthesis.cancel();
+
+  let speech =
+    new SpeechSynthesisUtterance(text);
+
+  speech.rate = 0.95;
+
+  speech.onstart = ()=>{
+    setStatus("Responding...");
+  };
+
+  speech.onend = ()=>{
+
+    if(isListening){
+
+      clearTimeout(restartTimeout);
+
+      restartTimeout =
+        setTimeout(()=>{
+          startListening();
+        },1000);
+    }
+  };
+
+  speechSynthesis.speak(speech);
+}
+
+/* MEMORY */
+
+function formatMemory(text){
+
+  text = text.trim();
+
+  if(text.startsWith("i ")){
+    text = text.replace(/^i /,"you ");
+  }
+
+  if(text.startsWith("my ")){
+    text = text.replace(/^my /,"your ");
+  }
+
+  return text;
+}
+
+function rememberFact(fact){
+
+  let memory =
+    JSON.parse(
+      localStorage.getItem("jarvis_memory") || "[]"
+    );
+
+  fact = formatMemory(fact);
+
+  memory.push(fact);
+
+  localStorage.setItem(
+    "jarvis_memory",
+    JSON.stringify(memory)
+  );
+}
+
+function getMemory(){
+
+  return JSON.parse(
+    localStorage.getItem("jarvis_memory") || "[]"
+  );
+}
+
+function clearMemory(){
+
+  localStorage.setItem(
+    "jarvis_memory",
+    JSON.stringify([])
+  );
+}
+
+/* MATCH */
+
+function match(text,arr){
+
+  return arr.some(
+    k=>text.includes(k)
+  );
+}
+
+/* COMMANDS */
+
+function processCommand(raw){
+
+  let text = raw.toLowerCase();
+
+  /* CLEAR MEMORY */
+
+  if(
+    match(text,[
+      "clear memory",
+      "reset memory",
+      "delete memory"
+    ])
+  ){
+
+    clearMemory();
+
+    speak("Memory cleared.");
+
+    return;
+  }
+
+  /* REMEMBER */
+
+  if(text.startsWith("remember")){
+
+    let fact =
+      text
+      .replace("remember that","")
+      .replace("remember","")
+      .trim();
+
+    if(fact){
+
+      rememberFact(fact);
+
+      speak("Memory saved.");
+
+      return;
+    }
+  }
+
+  /* RECALL */
+
+  if(
+    match(text,[
+      "what do you remember",
+      "memory"
+    ])
+  ){
+
+    let memory = getMemory();
+
+    if(memory.length === 0){
+
+      speak("Memory empty.");
+
+      return;
+    }
+
+    speak(memory.join(". "));
+
+    return;
+  }
+
+  /* TIME */
+
+  if(text.includes("time")){
+
+    let currentTime =
+      new Date().toLocaleTimeString(
+        "en-US",
+        {
+          hour:"numeric",
+          minute:"2-digit",
+          hour12:true
+        }
+      );
+
+    speak(
+      "The time is " + currentTime
+    );
+
+    return;
+  }
+
+  /* NAME */
+
+  if(
+    match(text,[
+      "who are you",
+      "your name"
+    ])
+  ){
+
+    speak("I am Jarvis.");
+
+    return;
+  }
+
+  /* YOUTUBE */
+
+  if(text.includes("youtube")){
+
+    speak("Opening YouTube.");
+
+    window.open("https://youtube.com");
+
+    return;
+  }
+
+  /* DEFAULT */
+
+  speak("Command not recognized.");
+}
+
+/* START */
+
+function startJarvis(){
+
+  if(isListening) return;
+
+  let SR =
+    window.SpeechRecognition ||
+    window.webkitSpeechRecognition;
+
+  if(!SR){
+
+    alert("Use Chrome browser");
+
+    return;
+  }
+
+  recognition = new SR();
+
+  recognition.lang = "en-US";
+
+  recognition.continuous = false;
+
+  recognition.interimResults = false;
+
+  recognition.maxAlternatives = 1;
+
+  isListening = true;
+
+  speak("Jarvis activated.");
+}
+
+/* LISTEN */
+
+function startListening(){
+
+  if(!isListening) return;
+
+  setStatus("Listening...");
+
+  try{
+    recognition.start();
+  }
+  catch(err){}
+}
+
+/* EVENTS */
+
+function setupRecognition(){
+
+  recognition.onresult = (event)=>{
+
+    let text =
+      event.results[0][0].transcript;
+
+    setStatus("Processing...");
+
+    processCommand(text);
+  };
+
+  recognition.onerror = ()=>{
+
+    setStatus("Retrying...");
+
+    clearTimeout(restartTimeout);
+
+    restartTimeout =
+      setTimeout(()=>{
+        startListening();
+      },1500);
+  };
+
+  recognition.onend = ()=>{
+
+    if(isListening){
+
+      clearTimeout(restartTimeout);
+
+      restartTimeout =
+        setTimeout(()=>{
+          startListening();
+        },1000);
+    }
+  };
+}
+
+/* OVERRIDE START */
+
+const oldStart = startJarvis;
+
+startJarvis = function(){
+
+  oldStart();
+
+  setupRecognition();
+};
 
 </script>
 
