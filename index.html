@@ -5,7 +5,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>JARVIS</title>
+<title>JARVIS X</title>
 
 <style>
 
@@ -22,12 +22,33 @@ body{
   color:#00e5ff;
 }
 
+/* BACKGROUND GLOW */
+
+body::before{
+
+  content:"";
+
+  position:absolute;
+
+  width:100%;
+  height:100%;
+
+  background:
+  radial-gradient(circle at center,
+  #00e5ff11 0%,
+  transparent 70%);
+
+}
+
 /* DATE TIME */
 
 .datetime{
+
   position:absolute;
+
   top:20px;
   left:20px;
+
   z-index:100;
 }
 
@@ -48,16 +69,24 @@ body{
 /* ONLINE */
 
 .online{
+
   position:absolute;
+
   top:20px;
   right:20px;
+
   color:#00ff9d;
+
   font-size:20px;
+
+  text-shadow:
+  0 0 10px #00ff9d;
 }
 
 /* CENTER */
 
 .center{
+
   width:100vw;
   height:100vh;
 
@@ -69,18 +98,73 @@ body{
 /* REACTOR */
 
 .reactor{
+
   position:relative;
-  width:350px;
-  height:350px;
+
+  width:380px;
+  height:380px;
 
   display:flex;
   justify-content:center;
   align-items:center;
 }
 
+/* OUTER ENERGY RING */
+
+.energy-ring{
+
+  position:absolute;
+
+  width:320px;
+  height:320px;
+
+  border-radius:50%;
+
+  border:2px solid #00e5ff44;
+
+  box-shadow:
+  0 0 20px #00e5ff,
+  inset 0 0 20px #00e5ff;
+
+  animation:rotate 12s linear infinite;
+}
+
+/* SECOND RING */
+
+.energy-ring2{
+
+  position:absolute;
+
+  width:250px;
+  height:250px;
+
+  border-radius:50%;
+
+  border:2px dashed #00e5ff66;
+
+  animation:rotateReverse 8s linear infinite;
+}
+
+/* THIRD RING */
+
+.energy-ring3{
+
+  position:absolute;
+
+  width:180px;
+  height:180px;
+
+  border-radius:50%;
+
+  border:2px solid #00e5ff88;
+
+  animation:rotate 5s linear infinite;
+}
+
 /* CORE */
 
 .core{
+
   position:absolute;
 
   width:90px;
@@ -92,109 +176,86 @@ body{
 
   box-shadow:
   0 0 20px #00e5ff,
-  0 0 60px #00e5ff,
+  0 0 50px #00e5ff,
   0 0 120px #00e5ff;
 
   animation:pulse 2s infinite;
 }
 
-/* ORBIT WRAPPERS */
+/* SCANNER */
 
-.orbit-wrap{
+.scanner{
+
   position:absolute;
 
-  width:100%;
-  height:100%;
+  width:320px;
+  height:320px;
 
-  display:flex;
-  justify-content:center;
-  align-items:center;
-}
-
-/* ORBIT PATH */
-
-.orbit{
-  position:relative;
-
-  border:2px solid #00e5ff55;
   border-radius:50%;
+
+  background:
+  linear-gradient(
+  90deg,
+  transparent,
+  #00e5ff55,
+  transparent
+  );
+
+  animation:scannerRotate 4s linear infinite;
 }
 
-/* ELECTRON */
+/* PARTICLES */
 
-.electron{
+.particle{
+
   position:absolute;
 
-  width:16px;
-  height:16px;
+  width:10px;
+  height:10px;
 
   border-radius:50%;
 
   background:#00e5ff;
 
-  top:-8px;
-  left:50%;
-
-  transform:translateX(-50%);
-
   box-shadow:
-  0 0 15px #00e5ff,
-  0 0 30px #00e5ff;
+  0 0 15px #00e5ff;
 }
 
-/* ORBIT SIZES */
-
-.orbit1{
-  width:140px;
-  height:140px;
+.p1{
+  top:40px;
+  left:180px;
+  animation:float1 4s infinite;
 }
 
-.orbit2{
-  width:220px;
-  height:220px;
+.p2{
+  bottom:60px;
+  right:80px;
+  animation:float2 5s infinite;
 }
 
-.orbit3{
-  width:300px;
-  height:300px;
-}
-
-/* REAL ROTATION */
-
-.wrap1{
-  animation:rotate1 5s linear infinite;
-}
-
-.wrap2{
-  animation:rotate2 8s linear infinite;
-}
-
-.wrap3{
-  animation:rotate3 11s linear infinite;
-}
-
-/* TILTS */
-
-.wrap2 .orbit{
-  transform:rotateX(75deg);
-}
-
-.wrap3 .orbit{
-  transform:rotateY(75deg);
+.p3{
+  left:50px;
+  bottom:120px;
+  animation:float3 6s infinite;
 }
 
 /* STATUS */
 
 .status{
+
   position:absolute;
+
   bottom:170px;
+
   font-size:22px;
 }
 
 /* WAVEFORM */
 
 .wave-container{
+
   position:absolute;
+
   bottom:70px;
 
   width:100%;
@@ -207,6 +268,7 @@ body{
 }
 
 .bar{
+
   width:6px;
 
   background:#00e5ff;
@@ -230,6 +292,7 @@ body{
 /* MIC */
 
 .mic-button{
+
   position:absolute;
 
   bottom:140px;
@@ -265,7 +328,7 @@ body{
   }
 
   50%{
-    transform:scale(1.08);
+    transform:scale(1.1);
   }
 
   100%{
@@ -273,7 +336,7 @@ body{
   }
 }
 
-@keyframes rotate1{
+@keyframes rotate{
 
   from{
     transform:rotate(0deg);
@@ -284,18 +347,18 @@ body{
   }
 }
 
-@keyframes rotate2{
+@keyframes rotateReverse{
 
   from{
-    transform:rotate(0deg);
+    transform:rotate(360deg);
   }
 
   to{
-    transform:rotate(-360deg);
+    transform:rotate(0deg);
   }
 }
 
-@keyframes rotate3{
+@keyframes scannerRotate{
 
   from{
     transform:rotate(0deg);
@@ -321,6 +384,27 @@ body{
   }
 }
 
+@keyframes float1{
+
+  0%{transform:translateY(0);}
+  50%{transform:translateY(-20px);}
+  100%{transform:translateY(0);}
+}
+
+@keyframes float2{
+
+  0%{transform:translateX(0);}
+  50%{transform:translateX(20px);}
+  100%{transform:translateX(0);}
+}
+
+@keyframes float3{
+
+  0%{transform:translateY(0);}
+  50%{transform:translateY(15px);}
+  100%{transform:translateY(0);}
+}
+
 </style>
 
 </head>
@@ -332,9 +416,7 @@ body{
 <div class="datetime">
 
 <div id="day"></div>
-
 <div id="date"></div>
-
 <div id="clock"></div>
 
 </div>
@@ -351,30 +433,24 @@ ONLINE
 
 <div class="reactor">
 
-<div class="orbit-wrap wrap1">
-<div class="orbit orbit1">
-<div class="electron"></div>
-</div>
-</div>
+<div class="scanner"></div>
 
-<div class="orbit-wrap wrap2">
-<div class="orbit orbit2">
-<div class="electron"></div>
-</div>
-</div>
+<div class="energy-ring"></div>
 
-<div class="orbit-wrap wrap3">
-<div class="orbit orbit3">
-<div class="electron"></div>
-</div>
-</div>
+<div class="energy-ring2"></div>
+
+<div class="energy-ring3"></div>
+
+<div class="particle p1"></div>
+<div class="particle p2"></div>
+<div class="particle p3"></div>
 
 <div class="core"></div>
 
 </div>
 
-<div class="status" id="status">
-Idle
+<div class="status">
+JARVIS ONLINE
 </div>
 
 </div>
