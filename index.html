@@ -22,7 +22,7 @@ body{
   color:#00e5ff;
 }
 
-/* BACKGROUND GLOW */
+/* BACKGROUND */
 
 body::before{
 
@@ -37,7 +37,6 @@ body::before{
   radial-gradient(circle at center,
   #00e5ff11 0%,
   transparent 70%);
-
 }
 
 /* DATE TIME */
@@ -50,6 +49,9 @@ body::before{
   left:20px;
 
   z-index:100;
+
+  text-shadow:
+  0 0 10px #00e5ff;
 }
 
 #day{
@@ -109,7 +111,7 @@ body::before{
   align-items:center;
 }
 
-/* OUTER ENERGY RING */
+/* OUTER RING */
 
 .energy-ring{
 
@@ -248,6 +250,9 @@ body::before{
   bottom:170px;
 
   font-size:22px;
+
+  text-shadow:
+  0 0 15px #00e5ff;
 }
 
 /* WAVEFORM */
@@ -276,6 +281,9 @@ body::before{
   border-radius:10px;
 
   animation:wave 1s infinite ease-in-out;
+
+  box-shadow:
+  0 0 10px #00e5ff;
 }
 
 .bar:nth-child(1){height:20px;animation-delay:0s;}
@@ -289,7 +297,7 @@ body::before{
 .bar:nth-child(9){height:60px;animation-delay:0.8s;}
 .bar:nth-child(10){height:25px;animation-delay:0.9s;}
 
-/* MIC */
+/* MIC BUTTON */
 
 .mic-button{
 
@@ -317,6 +325,8 @@ body::before{
   box-shadow:
   0 0 20px #00e5ff,
   0 0 50px #00e5ff55;
+
+  cursor:pointer;
 }
 
 /* ANIMATIONS */
@@ -449,8 +459,8 @@ ONLINE
 
 </div>
 
-<div class="status">
-JARVIS ONLINE
+<div class="status" id="status">
+Idle
 </div>
 
 </div>
@@ -474,11 +484,15 @@ JARVIS ONLINE
 
 <!-- MIC -->
 
-<button class="mic-button">
+<button class="mic-button"
+onclick="startJarvis()">
 🎤
 </button>
 
 <script>
+
+let recognition;
+let isListening = false;
 
 /* DATE TIME */
 
@@ -520,6 +534,252 @@ function updateDateTime(){
 setInterval(updateDateTime,1000);
 
 updateDateTime();
+
+/* STATUS */
+
+function setStatus(text){
+
+  document.getElementById("status").innerText =
+    text;
+}
+
+/* SPEAK */
+
+function speak(text){
+
+  speechSynthesis.cancel();
+
+  let speech =
+    new SpeechSynthesisUtterance(text);
+
+  speech.rate = 0.95;
+
+  speech.onstart = ()=>{
+
+    setStatus("Responding...");
+  };
+
+  speech.onend = ()=>{
+
+    if(isListening){
+
+      setTimeout(()=>{
+        startListening();
+      },1000);
+    }
+  };
+
+  speechSynthesis.speak(speech);
+}
+
+/* MEMORY */
+
+function rememberFact(fact){
+
+  let memory =
+    JSON.parse(
+      localStorage.getItem("jarvis_memory") || "[]"
+    );
+
+  memory.push(fact);
+
+  localStorage.setItem(
+    "jarvis_memory",
+    JSON.stringify(memory)
+  );
+}
+
+function getMemory(){
+
+  return JSON.parse(
+    localStorage.getItem("jarvis_memory") || "[]"
+  );
+}
+
+function clearMemory(){
+
+  localStorage.setItem(
+    "jarvis_memory",
+    JSON.stringify([])
+  );
+}
+
+/* MATCH */
+
+function match(text,arr){
+
+  return arr.some(
+    k=>text.includes(k)
+  );
+}
+
+/* COMMANDS */
+
+function processCommand(raw){
+
+  let text = raw.toLowerCase();
+
+  if(
+    match(text,[
+      "clear memory",
+      "reset memory",
+      "delete memory"
+    ])
+  ){
+
+    clearMemory();
+
+    speak("Memory cleared.");
+
+    return;
+  }
+
+  if(text.startsWith("remember")){
+
+    let fact =
+      text
+      .replace("remember that","")
+      .replace("remember","")
+      .trim();
+
+    if(fact){
+
+      rememberFact(fact);
+
+      speak("Memory saved.");
+
+      return;
+    }
+  }
+
+  if(
+    match(text,[
+      "what do you remember",
+      "memory"
+    ])
+  ){
+
+    let memory = getMemory();
+
+    if(memory.length === 0){
+
+      speak("Memory empty.");
+
+      return;
+    }
+
+    speak(memory.join(". "));
+
+    return;
+  }
+
+  if(text.includes("time")){
+
+    let currentTime =
+      new Date().toLocaleTimeString(
+        "en-US",
+        {
+          hour:"numeric",
+          minute:"2-digit",
+          hour12:true
+        }
+      );
+
+    speak(
+      "The time is " + currentTime
+    );
+
+    return;
+  }
+
+  if(
+    match(text,[
+      "who are you",
+      "your name"
+    ])
+  ){
+
+    speak("I am Jarvis.");
+
+    return;
+  }
+
+  speak("Command not recognized.");
+}
+
+/* START */
+
+function startJarvis(){
+
+  if(isListening) return;
+
+  let SR =
+    window.SpeechRecognition ||
+    window.webkitSpeechRecognition;
+
+  if(!SR){
+
+    alert("Use Chrome browser");
+
+    return;
+  }
+
+  recognition = new SR();
+
+  recognition.lang = "en-US";
+
+  recognition.continuous = false;
+
+  recognition.interimResults = false;
+
+  isListening = true;
+
+  recognition.onresult = (event)=>{
+
+    let text =
+      event.results[0][0].transcript;
+
+    setStatus("Processing...");
+
+    processCommand(text);
+  };
+
+  recognition.onerror = ()=>{
+
+    setStatus("Retrying...");
+
+    setTimeout(()=>{
+      startListening();
+    },1500);
+  };
+
+  recognition.onend = ()=>{
+
+    if(isListening){
+
+      setTimeout(()=>{
+        startListening();
+      },1000);
+    }
+  };
+
+  speak("Jarvis activated.");
+}
+
+/* LISTEN */
+
+function startListening(){
+
+  if(!isListening) return;
+
+  setStatus("Listening...");
+
+  try{
+
+    recognition.start();
+
+  }catch(err){}
+}
 
 </script>
 
